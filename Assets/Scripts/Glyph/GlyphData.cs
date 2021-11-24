@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlyphData: MonoBehaviour
+[CreateAssetMenu(fileName = "GlyphData", menuName = "GlyphData")]
+public class GlyphData: ScriptableObject
 {
     public List<Element> element;
     public Nature nature;

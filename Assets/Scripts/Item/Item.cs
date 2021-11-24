@@ -2,17 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : Pickable
 {
-    // Start is called before the first frame update
-    public virtual void Start()
-    {
-        
-    }
+    public GameObject prefab;
 
-    // Update is called once per frame
-    public virtual void Update()
-    {
-        
-    }
 }

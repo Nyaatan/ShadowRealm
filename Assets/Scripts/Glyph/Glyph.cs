@@ -9,6 +9,8 @@ public class Glyph : Item
     public GlyphData data;
     public Spell spellPrototype;
 
+    public GameObject prefabInstance;
+
     public void setVector(Vector2 vector)
     {
         data.vector = vector;
@@ -18,8 +20,8 @@ public class Glyph : Item
     {
         calculateElementFromVector();
         calculateNatureFromVector();
-        spellPrototype.elements = data.element;
-        spellPrototype.nature = data.nature;
+        spellPrototype.data.elements = data.element;
+        spellPrototype.data.nature = data.nature;
     }
 
     public void calculateElementFromVector()
@@ -60,22 +62,32 @@ public class Glyph : Item
         else data.nature = GlyphData.Nature.SELF;
     }
 
-    public void use(GameObject user)
+    public override void Use(Entity user, GameObject target)
     {
         Spell spell = Instantiate(spellPrototype);
-        spell.transform.position = user.transform.position;
+        spell.transform.position = user.gameObject.transform.position;
+        spell.caster = user;
+        spell.target = target;
+        spell.Cast();
+        isOnCooldown = true;
     }
 
-    public override void Start()
+    public void Start()
     {
-        calculateDataFromVector();
-        Debug.Log(data.vector);
-        Debug.Log(data.nature);
-        foreach (GlyphData.Element elem in data.element) {
-            Debug.Log(elem);
-        }
-        use(gameObject);
-        use(gameObject);
-        use(gameObject);
+        prefabInstance = Instantiate(prefab);
+        prefabInstance.transform.position = transform.position;
+        prefabInstance.transform.parent = this.transform;
+        //calculateDataFromVector();
+        //Debug.Log(data.vector);
+        //Debug.Log(data.nature);
+        //foreach (GlyphData.Element elem in data.element) {
+        //    Debug.Log(elem);
+        //}
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        prefabInstance.transform.position = transform.position;
     }
 }

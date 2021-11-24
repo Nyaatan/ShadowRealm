@@ -2,38 +2,88 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spell : MonoBehaviour
+public class Spell : MonoBehaviour, TimedObject
 {
-    public GlyphData.Nature nature = GlyphData.Nature.SINGLE_TARGET;
-    public List<GlyphData.Element> elements = new List<GlyphData.Element>();
+    public SpellEffectHandler effectHandler;
 
     public GameObject target;
 
-    public float speed = 1;
-    public float damage = 0;
-    public float heal = 0;
-    public float range = 10;
-    public float width = 5;
+    public List<LayerMask> collidesWith = new List<LayerMask>();
+    public List<LayerMask> hasEffectsOn = new List<LayerMask>();
 
-    void Start()
+    public Entity caster;
+
+    public Vector3 direction;
+    public bool isCasted = false;
+
+    public List<GameObject> targetsHit = new List<GameObject>();
+
+    [SerializeField]
+    public SpellData data;
+
+    public void Cast()
     {
-        
+        Vector3 startPos = caster.transform.position;
+        Vector3 targetPos = target.transform.position;
+
+        direction = targetPos - startPos;
+
+        isCasted = true;
+        if (data.nature == GlyphData.Nature.SELF) target.transform.position = caster.transform.position;
+        GetComponent<TTL>().start = true;
     }
 
-    void Update()
+    public void Start()
     {
-        Move();
-        CreateParticles();
+        GetComponent<TTL>().ttl = data.range;
+        GetComponent<TTL>().parent = this;
+    }
+
+    public void Update()
+    {
+        if(isCasted) Move();
     }
 
     void Move()
     {
-        
+        transform.position += direction.normalized * data.speed * Time.deltaTime;
     }
 
 
-    void CreateParticles()
-    {
 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.LogWarning(collision.gameObject);
+        if (collidesWith.Contains(collision.gameObject.layer)) TriggerEffect(collision);
+    }
+
+    public void TriggerEffect(Collider2D collision) {
+        
+        if(data.nature == GlyphData.Nature.AOE)
+        {
+            effectHandler.HandleAOE();
+        }
+        if (collision != null)
+        {
+            if (data.nature == GlyphData.Nature.SINGLE_TARGET && collision.gameObject != caster)
+            {
+                effectHandler.HandleST();
+            }
+            else if (data.nature == GlyphData.Nature.CHAIN && collision.gameObject != caster)
+            {
+                effectHandler.HandleChain();
+            }
+            else if(data.nature == GlyphData.Nature.SELF && collision.gameObject == caster)
+            {
+                effectHandler.HandleSelf();
+            }
+        }
+    }
+
+    public void OnTtlEnd()
+    {
+        isCasted = false;
+        TriggerEffect(null);
     }
 }
+

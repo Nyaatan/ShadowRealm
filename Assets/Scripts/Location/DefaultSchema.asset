@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54111be244ad9b942abbc514a8e4e91e, type: 3}
+  m_Name: DefaultSchema
+  m_EditorClassIdentifier: 
+  environment: 1
+  RoomData:
+    size: {x: 128, y: 14}
+    minFloorHeight: 1
+    maxFloorHeight: 3
+    minRoofOffset: 1
+    maxRoofOffset: 3
+    minWallOffset: 5
+    maxWallOffset: 16
+    roof: 0
+    leftWall: 1
+    rightWall: 1
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 0
+    waypointWallOffset: 3
+  minRoomSize: {x: 128, y: 14}
+  maxRoomSize: {x: 128, y: 14}
+  minFloors: 2
+  maxFloors: 5
+  minRooms: 10
+  maxRooms: 20
+  neighborUpChance: 0.3
+  neighborDownChance: 0.5
+  neighborLeftChance: 0.3
+  neighborRightChance: 1
+  noRoofOnTop: 1
+  GeneratorData:
+    scale: 0.28
+    octaves: 5
+    persistance: -1.66
+    lacunarity: -16.16
+    alifConstant: 6.564254
+  GraphData:
+    layers: 7
+    minlayers: 3
+    startLayer: 0
+    nodes: 12
+    maxWidth: 20
+    neighborUpChance: 0.5
+    neighborDownChance: 0.5
+    neighborLeftChance: 0.3
+    neighborRightChance: 1
+    breakWallChance: 0.5
+    nodeTypes: 0100000002000000
+    nodeTypeChances:
+    - 0
+    - 0
+  bossRoomData:
+    size: {x: 64, y: 16}
+    minFloorHeight: 3
+    maxFloorHeight: 3
+    minRoofOffset: -1
+    maxRoofOffset: -1
+    minWallOffset: 1
+    maxWallOffset: 3
+    roof: 0
+    leftWall: 0
+    rightWall: 0
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 0
+    waypointWallOffset: 3
+  treasureRoomData:
+    size: {x: 0, y: 0}
+    minFloorHeight: 0
+    maxFloorHeight: 0
+    minRoofOffset: 0
+    maxRoofOffset: 0
+    minWallOffset: 0
+    maxWallOffset: 0
+    roof: 0
+    leftWall: 0
+    rightWall: 0
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 0
+    waypointWallOffset: 3
+  challengeRoomData:
+    size: {x: 0, y: 0}
+    minFloorHeight: 0
+    maxFloorHeight: 0
+    minRoofOffset: 0
+    maxRoofOffset: 0
+    minWallOffset: 0
+    maxWallOffset: 0
+    roof: 0
+    leftWall: 0
+    rightWall: 0
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 0
+    waypointWallOffset: 3

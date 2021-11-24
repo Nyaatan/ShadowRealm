@@ -5,27 +5,34 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public static KeyCode interactKey = KeyCode.E;
-    public string popUpText = string.Format("Press {0}", interactKey.ToString());
+    public KeyCode interactKey = KeyCode.E;
+    public string popUpText;
     public bool interactable = true;
+    Collider2D collision;
+    bool triggerStay = false;
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
-        
+        popUpText = string.Format("Press {0}", interactKey.ToString());
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
-        
+        if (Input.GetKeyDown(interactKey) && collision != null) if(collision.gameObject.name == "Player" && triggerStay)
+        {
+
+                //StartCoroutine(DisableColliderForSeconds(3f, GetComponent<Collider2D>()));
+                Interact(collision.gameObject);
+
+        }
     }
 
     public virtual void Interact(GameObject obj) { }
 
     public void showPopUp()
     {
-        Debug.Log(popUpText);
         Debug.Log(popUpText);
     }
 
@@ -34,18 +41,30 @@ public class Interactable : MonoBehaviour
 
     }
 
-    public void OnCollisionEnter2D(Collision collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.name == "Player") showPopUp();
+        this.collision = collision;
+        if (collision.gameObject.name == "Player")
+        {
+            showPopUp();
+            triggerStay = true;
+        }
     }
 
-    public void OnCollisionStay2D(Collision2D collision)
+    public void OnTriggerExit2D(Collider2D collision)
     {
-        if (Input.GetKeyDown(interactKey) && collision.gameObject.name == "Player") Interact(collision.gameObject);
+        this.collision = null;
+        if (collision.gameObject.name == "Player")
+        {
+            hidePopUp();
+            triggerStay = false;
+        }
     }
 
-    public void OnCollisionExit2D(Collision2D collision)
+    public IEnumerator DisableColliderForSeconds(float time, Collider2D collider)
     {
-        if(collision.gameObject.name == "Player") hidePopUp();
+        collider.enabled = false;
+        yield return new WaitForSeconds(time);
+        collider.enabled = true;
     }
 }

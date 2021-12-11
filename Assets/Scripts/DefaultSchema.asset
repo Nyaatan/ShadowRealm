@@ -1,0 +1,234 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54111be244ad9b942abbc514a8e4e91e, type: 3}
+  m_Name: DefaultSchema
+  m_EditorClassIdentifier: 
+  environment: 1
+  RoomData:
+    size: {x: 128, y: 14}
+    minFloorHeight: 1
+    maxFloorHeight: 3
+    minRoofOffset: -1
+    maxRoofOffset: -1
+    minWallOffset: 2
+    maxWallOffset: 3
+    roof: 0
+    leftWall: 0
+    rightWall: 0
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 0
+    waypointWallOffset: 3
+    enemyData:
+      allowedTypes: 01000000
+      maxEnemies: 10
+      allowedGlyphs:
+      - {fileID: 11400000, guid: 4e70e133af1215f4289a81aff4b3f78f, type: 2}
+      minWallOffset: 80
+      minGroupSize: 0
+      maxGroupSize: 3
+      perlinTreshold: 0.38
+      groupMinDistance: 30
+      speed: 20
+      scale: {x: 2, y: 2, z: 2}
+      minMaxGlyphTier: {x: 1, y: 2}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 0, y: 0}
+      maxHealth: 100
+      powerModifier: 0.7
+      animatorOverriderId: 0
+    bossData:
+      speed: 10
+      burstCount: 1
+      burstInterval: 0.1
+      scale: {x: 2, y: 2, z: 2}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 1, y: 1}
+      nGlyphs: 2
+      maxHealth: 2000
+      phaseChangeThreshold: 0.5
+      castSequence: 0
+      bossPowerModifier: 2
+      animationSet: 0
+  minRoomSize: {x: 128, y: 14}
+  maxRoomSize: {x: 128, y: 14}
+  minFloors: 1
+  maxFloors: 3
+  minRooms: 1
+  maxRooms: 1
+  noRoofOnTop: 0
+  GeneratorData:
+    scale: 0.28
+    octaves: 5
+    persistance: 0.41
+    lacunarity: 0.3
+    alifConstant: 30.034899
+  GraphData:
+    layers: 7
+    minlayers: 3
+    startLayer: 0
+    nodes: 17
+    maxWidth: 20
+    neighborUpChance: 0.5
+    neighborDownChance: 0.5
+    neighborLeftChance: 0.3
+    neighborRightChance: 1
+    breakWallChance: 0.5
+    nodeTypes: 0200000001000000
+    nodeTypeChances:
+    - 0.1
+    - 0.1
+  bossRoomData:
+    size: {x: 64, y: 16}
+    minFloorHeight: 3
+    maxFloorHeight: 3
+    minRoofOffset: -1
+    maxRoofOffset: -1
+    minWallOffset: 1
+    maxWallOffset: 1
+    roof: 0
+    leftWall: 1
+    rightWall: 1
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 0
+    waypointWallOffset: 3
+    enemyData:
+      allowedTypes: 
+      maxEnemies: 0
+      allowedGlyphs: []
+      minWallOffset: 0
+      minGroupSize: 0
+      maxGroupSize: 0
+      perlinTreshold: 0
+      groupMinDistance: 0
+      speed: 10
+      scale: {x: 2, y: 2, z: 2}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 1, y: 1}
+      maxHealth: 100
+      powerModifier: 2
+      animatorOverriderId: 0
+    bossData:
+      speed: 10
+      burstCount: 3
+      burstInterval: 0.1
+      scale: {x: 2.2064598, y: 2.2064598, z: 2.2064598}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: 0}
+      maxVectorValues: {x: 0, y: 1}
+      nGlyphs: 3
+      maxHealth: 2000
+      phaseChangeThreshold: 0.5
+      castSequence: 0
+      bossPowerModifier: 3
+      animationSet: 1
+  treasureRoomData:
+    size: {x: 32, y: 16}
+    minFloorHeight: 1
+    maxFloorHeight: 3
+    minRoofOffset: 1
+    maxRoofOffset: 3
+    minWallOffset: 1
+    maxWallOffset: 3
+    roof: 0
+    leftWall: 0
+    rightWall: 0
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 1
+    isChallenge: 0
+    waypointWallOffset: 3
+    enemyData:
+      allowedTypes: 
+      maxEnemies: 0
+      allowedGlyphs: []
+      minWallOffset: 0
+      minGroupSize: 0
+      maxGroupSize: 0
+      perlinTreshold: 0
+      groupMinDistance: 0
+      speed: 10
+      scale: {x: 2, y: 2, z: 2}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 1, y: 1}
+      maxHealth: 100
+      powerModifier: 2
+      animatorOverriderId: 0
+    bossData:
+      speed: 10
+      burstCount: 1
+      burstInterval: 0.1
+      scale: {x: 20, y: 20, z: 20}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 1, y: 1}
+      nGlyphs: 2
+      maxHealth: 2000
+      phaseChangeThreshold: 0.5
+      castSequence: 0
+      bossPowerModifier: 2
+      animationSet: 0
+  challengeRoomData:
+    size: {x: 64, y: 16}
+    minFloorHeight: 1
+    maxFloorHeight: 3
+    minRoofOffset: 1
+    maxRoofOffset: 3
+    minWallOffset: 1
+    maxWallOffset: 3
+    roof: 0
+    leftWall: 0
+    rightWall: 0
+    floor: 1
+    waypointPrefab: {fileID: 2111330451241587584, guid: c98c022e1cb6ca94483883fd4cc3a86a, type: 3}
+    isTreasure: 0
+    isChallenge: 1
+    waypointWallOffset: 3
+    enemyData:
+      allowedTypes: 01000000
+      maxEnemies: 15
+      allowedGlyphs:
+      - {fileID: 11400000, guid: 4e70e133af1215f4289a81aff4b3f78f, type: 2}
+      - {fileID: 11400000, guid: 976c6379d842ee444b8608441c78d8d5, type: 2}
+      minWallOffset: 10
+      minGroupSize: 1
+      maxGroupSize: 5
+      perlinTreshold: 0.3
+      groupMinDistance: 20
+      speed: 10
+      scale: {x: 2, y: 2, z: 2}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 1, y: 1}
+      maxHealth: 100
+      powerModifier: 2
+      animatorOverriderId: 0
+    bossData:
+      speed: 10
+      burstCount: 1
+      burstInterval: 0.1
+      scale: {x: 20, y: 20, z: 20}
+      minMaxGlyphTier: {x: 1, y: 4}
+      minVectorValues: {x: -1, y: -1}
+      maxVectorValues: {x: 1, y: 1}
+      nGlyphs: 2
+      maxHealth: 2000
+      phaseChangeThreshold: 0.5
+      castSequence: 0
+      bossPowerModifier: 2
+      animationSet: 0

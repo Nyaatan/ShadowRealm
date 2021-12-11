@@ -29,12 +29,20 @@ public class Spell : MonoBehaviour, TimedObject
         direction = targetPos - startPos;
 
         isCasted = true;
-        if (data.nature == GlyphData.Nature.SELF) target.transform.position = caster.transform.position;
+        if (data.nature == GlyphData.Nature.SELF)
+        {
+            target.transform.position = caster.transform.position;
+
+            GetComponent<TTL>().ttl = 0.001f;
+        }
+
         GetComponent<TTL>().start = true;
+        //Debug.Log(GetComponent<TTL>().start);
     }
 
     public void Start()
     {
+        GetComponent<TTL>().start = isCasted;
         GetComponent<TTL>().ttl = data.range;
         GetComponent<TTL>().parent = this;
     }
@@ -53,31 +61,49 @@ public class Spell : MonoBehaviour, TimedObject
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.LogWarning(collision.gameObject);
-        if (collidesWith.Contains(collision.gameObject.layer)) TriggerEffect(collision);
+        try
+        {
+            //Debug.LogWarning(collision.gameObject);
+            if (isCasted)
+                foreach (LayerMask layerMask in collidesWith)
+                {
+                    if (collision.gameObject.layer == (int)Mathf.Log(layerMask, 2) && collision.gameObject.layer != caster.gameObject.layer)
+                    {
+                        isCasted = false;
+                        TriggerEffect(collision);
+                    }
+                }
+        }
+        catch (MissingReferenceException e)
+        {
+            Debug.LogWarning(e);
+        }
     }
 
     public void TriggerEffect(Collider2D collision) {
-        
-        if(data.nature == GlyphData.Nature.AOE)
+        //if (collision != null) Debug.LogWarning(collision.gameObject);
+
+        if (data.nature == GlyphData.Nature.AOE)
         {
-            effectHandler.HandleAOE();
+            effectHandler.HandleAOE(collision);
         }
-        if (collision != null)
+        else if (data.nature == GlyphData.Nature.SELF)
         {
+            effectHandler.HandleSelf(caster);
+        }
+        else if (collision != null)
+        {
+
             if (data.nature == GlyphData.Nature.SINGLE_TARGET && collision.gameObject != caster)
             {
-                effectHandler.HandleST();
+                effectHandler.HandleST(collision);
             }
             else if (data.nature == GlyphData.Nature.CHAIN && collision.gameObject != caster)
             {
-                effectHandler.HandleChain();
-            }
-            else if(data.nature == GlyphData.Nature.SELF && collision.gameObject == caster)
-            {
-                effectHandler.HandleSelf();
+                effectHandler.HandleChain(collision);
             }
         }
+        else effectHandler.HandleNone();
     }
 
     public void OnTtlEnd()

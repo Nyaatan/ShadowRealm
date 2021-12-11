@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,5 +29,10 @@ public class Pickable : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.name == "Player") collision.gameObject.GetComponent<Player>().Pick(this);
+    }
+
+    public virtual string GetTooltipString()
+    {
+        return "";
     }
 }

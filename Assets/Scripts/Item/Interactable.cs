@@ -31,14 +31,14 @@ public class Interactable : MonoBehaviour
 
     public virtual void Interact(GameObject obj) { }
 
-    public void showPopUp()
+    public virtual void showPopUp()
     {
-        Debug.Log(popUpText);
+        Tooltip.Instance.ShowTooltip(popUpText);
     }
 
-    public void hidePopUp()
+    public virtual void hidePopUp()
     {
-
+        Tooltip.Instance.HideTooltip();
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

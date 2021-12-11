@@ -20,4 +20,11 @@ public class RoomData
     public bool isTreasure = false;
     public bool isChallenge = false;
     public int waypointWallOffset = 3;
+    public EnemyData enemyData;
+    public BossData bossData;
+
+    public RoomData Copy()
+    {
+        return MemberwiseClone() as RoomData;
+    }
 }

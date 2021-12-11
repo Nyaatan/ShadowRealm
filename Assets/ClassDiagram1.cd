@@ -1,0 +1,642 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="BossAttack" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\BossAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BossDeath" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\BossDeath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BossPhaseChange" Collapsed="true">
+    <Position X="19.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\BossPhaseChange.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BossRun" Collapsed="true">
+    <Position X="21.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAEAAAYAAAAABAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\BossRun.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BossSpecialAttack" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\BossSpecialAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimationOverride" Collapsed="true">
+    <Position X="43.75" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\AnimationOverride.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Boss">
+    <Position X="35" Y="19" Width="3.5" />
+    <Members>
+      <Field Name="glyphInHand" Hidden="true" />
+      <Field Name="glyphs" Hidden="true" />
+    </Members>
+    <AssociationLine Name="overrider" Type="AnimationOverride" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="36.156" Y="24.339" />
+        <Point X="36.156" Y="28.758" />
+        <Point X="44.562" Y="28.758" />
+        <Point X="44.562" Y="23.691" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>JSAACAABCCkAQAEABEAAgIAAAIAAAgABBAAwAACAiAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\Boss.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="overrider" />
+      <Field Name="data" />
+      <Field Name="bar" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Enemy">
+    <Position X="39" Y="19" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>BIQiAAEBE+hJgIGAICkAAJAAAEAREACEBICYAhCAwAg=</HashCode>
+      <FileName>Assets\Scripts\Enemy\Enemy.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="overrider" />
+      <Field Name="type" />
+      <Field Name="state" />
+      <Field Name="data" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EnemyDetectionRange" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACIACAAAABAAAAAAQAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\EnemyDetectionRange.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity">
+    <Position X="35" Y="13.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>IBQAAAAIACgAAACAAAAAgMAAAAAAAAACAAAQIAgACCg=</HashCode>
+      <FileName>Assets\Scripts\Enemy\Entity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="inventory" />
+      <Field Name="affinity" />
+      <Field Name="pickableInHand" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EnemyDeath" Collapsed="true">
+    <Position X="21.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EnemyDeath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElementColourPair">
+    <Position X="29.5" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Glyph\ElementColourPair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Glyph" Collapsed="true" HideInheritanceLine="true">
+    <Position X="14.75" Y="17.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQACAgAACBAAAAAQAAAEIAAAAAECAAEAAAQBAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Glyph\Glyph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlyphData" Collapsed="true">
+    <Position X="15.25" Y="15.25" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAKAAAAUAAAAQAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Glyph\GlyphData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlyphTable" HideInheritanceLine="true">
+    <Position X="18.5" Y="17.5" Width="3" />
+    <NestedTypes>
+      <Class Name="GlyphTable.GlyphCreationException" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Glyph\GlyphTable.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAADAAIAAgAAAIAAQAoAARAjBAAAASACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Glyph\GlyphTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProximityDetector">
+    <Position X="27.75" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AARABAAIACAAAAAgAAAAAAAAAEAgAAAACAACBAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Glyph\ProximityDetector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spell" BaseTypeListCollapsed="true">
+    <Position X="31.5" Y="8.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>EAYAAEIAAKAAIAAQIAAAAAAACEQAAAAABAAQBAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Glyph\Spell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="effectHandler" />
+      <Field Name="data" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SpellData">
+    <Position X="31.5" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAIAIAAoBAAQAAAAAAAIAAAEQAAAAABAAACAAA=</HashCode>
+      <FileName>Assets\Scripts\Glyph\SpellData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="colours" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SpellEffectHandler">
+    <Position X="27.75" Y="9" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAACAAAAAgAAgAAAACAAAAAAAsAACAAAAIAAg=</HashCode>
+      <FileName>Assets\Scripts\Glyph\SpellEffectHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="spell" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Chest" HideInheritanceLine="true">
+    <Position X="27" Y="19.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item\Chest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interactable" Collapsed="true">
+    <Position X="29.5" Y="21" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAggCgACgAAAAAAAAAAJAAIEAAAAgAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item\Interactable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Inventory">
+    <Position X="31.25" Y="15" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAABABIAABAAACAAAAAACAAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Item\Inventory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="pickables" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Item" HideInheritanceLine="true">
+    <Position X="35.5" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pickable" Collapsed="true">
+    <Position X="31.25" Y="13.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAEQAAAGAEAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item\Pickable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BossData">
+    <Position X="33.5" Y="24.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAoAAAAAAAAICAAAABCQkAAQwAIIAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\BossData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dungeon" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EARAASAACigAAAAsGCICAAICAIgFBEAABCAAAQUAIgA=</HashCode>
+      <FileName>Assets\Scripts\Location\Dungeon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EnemyData" Collapsed="true">
+    <Position X="43.75" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIIAIAABgAABCQAACACAgAAA4AIAAAUAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\EnemyData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeneratorData" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAEBCAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\GeneratorData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graph" Collapsed="true">
+    <Position X="19.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAgAAAABCAAAAAAAAEAAAAAAAAAAIAMIAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Node" Collapsed="true">
+    <Position X="18" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAADEAAAAAAAAAAABAAIAAAAAJAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Location\Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphData" Collapsed="true">
+    <Position X="21.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAgAAQAAAEAAEAAAAAAAAAAEAAIAAAAAFAIEIAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Graph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PerlinGenerator" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\PerlinGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuestWaypoint">
+    <Position X="24" Y="24.5" Width="2.5" />
+    <InheritanceLine Type="Waypoint" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="28.188" Y="24.704" />
+        <Point X="28.188" Y="25.816" />
+        <Point X="26.5" Y="25.816" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAADgAAAAAAAAAAAAAIAAABAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Location\QuestWaypoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Room" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAQABAAAGAABBCAQAFAAABAwAsMEAAAAAAAABIAAI=</HashCode>
+      <FileName>Assets\Scripts\Location\Room.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RoomData" Collapsed="true">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAFAgACAAAAEAICAAIYIAAgAAgAAAABEAAIAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\RoomData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Schema" Collapsed="true">
+    <Position X="8" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAAAAACiACgAACADYAAAAIBAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Schema.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Waypoint" HideInheritanceLine="true">
+    <Position X="27" Y="22.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAIAAAAIAAAAAAIAAAAAACAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Waypoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PauseMenu" Collapsed="true">
+    <Position X="21.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAgAIAA=</HashCode>
+      <FileName>Assets\Scripts\PauseMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterController2D" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAGAohAAAAgCAAAAAEAAAAgAAQYQCCAAAAAAGA=</HashCode>
+      <FileName>Assets\Scripts\Player\CharacterController2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player">
+    <Position X="32.25" Y="19" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAUAAAIKACgAAICAAAAQBIAAAAAAEAAAACCAAgAQAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\Player.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="lastInteraction" />
+      <Field Name="healthBar" />
+      <Field Name="inventoryUI" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PlayerMovement" Collapsed="true">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQCAAAAAgAAAAEAAAAAAAAAAAAAGAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerDeath" Collapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\PlayerDeath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PoolingComparator" Collapsed="true">
+    <Position X="16.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAACAAIAAABAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\PoolingComparator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraController" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAAgAQIAAAIAAAAAIIAAIBQAAAAAAACAIAAgAAAAIEA=</HashCode>
+      <FileName>Assets\Scripts\UI\CameraController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlyphTableUI" Collapsed="true">
+    <Position X="14.75" Y="16.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAQAACCAACAAAABQAAAAAQAAAEAAgAABAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\GlyphTableUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthBar">
+    <Position X="29.5" Y="19" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAEAgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\HealthBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InventoryUI" Collapsed="true">
+    <Position X="29.5" Y="23" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAACAAAAAQAAAAAAAAAEAEAAACBAAAAAAKAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\InventoryUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainMenu" Collapsed="true">
+    <Position X="16.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAEAABIAAAAABAAAAgAQAAAAAAAAAAIAA=</HashCode>
+      <FileName>Assets\Scripts\UI\MainMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SlotUI" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAACABAgAAAAAAAAAQAAIgA=</HashCode>
+      <FileName>Assets\Scripts\UI\SlotUI.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Tooltip" Collapsed="true">
+    <Position X="21.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIQIAAABAAAAAAAAAAAAAAAAEAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\UI\Tooltip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChallengeRoomActivator" HideInheritanceLine="true">
+    <Position X="24.25" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAEAoAAAAQACAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\ChallengeRoomActivator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GameManager" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABIAAAAAAJAAAEAAQAAAEAJJUAAAAAQACEA=</HashCode>
+      <FileName>Assets\Scripts\Utils\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Affinity">
+    <Position X="39.75" Y="13.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAgAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjectPooler" Collapsed="true">
+    <Position X="19.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEACAAAAAAAAAAEEAEBAAAAEAAQAAgAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Utils\ObjectPooler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuestGenerator">
+    <Position X="4.5" Y="10.25" Width="2.25" />
+    <AssociationLine Name="defaultSchema" Type="Schema" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="11.625" />
+        <Point X="8" Y="11.625" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="schemaPrefab" Type="Schema" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="11.125" />
+        <Point X="8" Y="11.125" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAABAAACBAEAAAAAAAAAAAAAAAAAAAAABAAAgAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="defaultSchema" />
+      <Field Name="schemaPrefab" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TTL">
+    <Position X="32.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAABgAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\TTL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Voxel" Collapsed="true">
+    <Position X="12.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAgAAAIAAACAAAAAIAgQAAFQQAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Voxel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="NeighbourNodes" Collapsed="true">
+    <Position X="11" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAIAAAAAAAAAgAAgAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Graph.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Location" Collapsed="true">
+    <Position X="11" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Dungeon.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TimedObject" Collapsed="true">
+    <Position X="27" Y="18.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\TTL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="State" Collapsed="true">
+    <Position X="43.75" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAABAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CastSequence" Collapsed="true">
+    <Position X="4.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\BossData.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnemyType" Collapsed="true">
+    <Position X="43.75" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\EnemyData.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Environment" Collapsed="true">
+    <Position X="15.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAICAAAAAAAAAAAAAAAAAAAAAIAACAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Environment.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="NodeType" Collapsed="true">
+    <Position X="16.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAACAAAAACAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Graph.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Direction" Collapsed="true">
+    <Position X="12.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAQAAAAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Location\Waypoint.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossType" Collapsed="true">
+    <Position X="6.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossSize" Collapsed="true">
+    <Position X="4.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAEAAIAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossPower" Collapsed="true">
+    <Position X="9.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAQAAAAAAEAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossSpeed" Collapsed="true">
+    <Position X="6.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAgAAAEAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossBurst" Collapsed="true">
+    <Position X="4.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAQAAAAAAAAAEAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossElement" Collapsed="true">
+    <Position X="6.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BossHealth" Collapsed="true">
+    <Position X="8" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAQAACEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="LocationType" Collapsed="true">
+    <Position X="6.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAACAAAAAAAAAAEAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnemiesInRoom" Collapsed="true">
+    <Position X="8" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAIABAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnemyGroups" Collapsed="true">
+    <Position X="8" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAEAAAAAAAAAAAAAAQCA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnemyFlying" Collapsed="true">
+    <Position X="8" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnemyTypes" Collapsed="true">
+    <Position X="4.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EnemyElement" Collapsed="true">
+    <Position X="9.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Utils\QuestGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

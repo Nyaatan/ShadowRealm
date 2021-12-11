@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,24 @@ public class Glyph : Item
 
     public GameObject prefabInstance;
 
+    public bool isOnTable = false;
+
     public void setVector(Vector2 vector)
     {
         data.vector = vector;
+    }
+
+    internal static GameObject GetRandom(Vector2 minMaxTier, Vector2 minVectorBoundary, Vector2 maxVectorBoundary, bool canBeEmpty)
+    {
+        GameObject instance = Instantiate(GameManager.Instance.glyphPrototype);
+        Glyph glyph = instance.GetComponent<Glyph>(); 
+        glyph.data = Instantiate(glyph.data);
+        glyph.data.vector = new Vector2(UnityEngine.Random.Range(minVectorBoundary.x, maxVectorBoundary.x), UnityEngine.Random.Range(minVectorBoundary.y, maxVectorBoundary.y));
+        glyph.data.tier = (short) UnityEngine.Random.Range((int) minMaxTier.x, (int) minMaxTier.y + 1);
+        glyph.calculateDataFromVector();
+        glyph.CalculateSpellData();
+        instance.GetComponent<Rigidbody2D>().simulated = true;
+        return instance;
     }
 
     public void calculateDataFromVector()
@@ -68,6 +84,7 @@ public class Glyph : Item
         spell.transform.position = user.gameObject.transform.position;
         spell.caster = user;
         spell.target = target;
+
         spell.Cast();
         isOnCooldown = true;
     }
@@ -77,6 +94,12 @@ public class Glyph : Item
         prefabInstance = Instantiate(prefab);
         prefabInstance.transform.position = transform.position;
         prefabInstance.transform.parent = this.transform;
+        data = Instantiate(data);
+
+        if (!data.empty) spellPrototype.data = CalculateSpellData();
+        else spellPrototype.gameObject.SetActive(false);
+
+
         //calculateDataFromVector();
         //Debug.Log(data.vector);
         //Debug.Log(data.nature);
@@ -85,9 +108,38 @@ public class Glyph : Item
         //}
     }
 
+    public SpellData CalculateSpellData()
+    {
+        SpellData data = new SpellData();
+
+        List<SpellData> defaults = new List<SpellData>();
+        foreach (GlyphData.Element element in this.data.element)
+        {
+            defaults.Add(GameManager.Instance.getDefaultSpellData(this.data.nature, element));
+        }
+
+        data = SpellData.Combine(defaults, this.data.tier);
+
+        return data;
+    }
+
     public override void Update()
     {
         base.Update();
         prefabInstance.transform.position = transform.position;
+        spellPrototype.transform.position = transform.position;
+    }
+
+    public override string GetTooltipString()
+    {
+        string elems = data.empty ? "empty" : string.Join(" ", data.element);
+        string nature = data.empty ? "" : data.nature.ToString();
+        string damage = data.empty ? "" : spellPrototype.data.damage.ToString();
+        string heal = data.empty ? "" : spellPrototype.data.heal.ToString();
+        return $"Tier: {data.tier}\n" +
+            $"Elements:  {elems}\n" +
+            $"Nature: {nature}\n" +
+            $"Damage: {damage}\n" +
+            $"Heal: {heal}";
     }
 }

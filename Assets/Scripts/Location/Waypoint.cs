@@ -7,14 +7,17 @@ public class Waypoint : Interactable
     public GameObject dungeon;
     public Location destination;
     public Direction direction = Direction.NONE;
+    internal System.Action<int> specialAction = null;
 
     public override void Interact(GameObject obj)
     {
-        obj.GetComponent<Player>().lastInteraction = this;
-        GameManager.Instance.enterBlackScreen();
-        if (destination == null) dungeon.GetComponent<Location>().Enter();
-        else destination.Enter();
-        GameManager.Instance.exitBlackScreen();
+        if (specialAction != null) specialAction(0);
+        else
+        {
+            obj.GetComponent<Player>().lastInteraction = this;
+            GameManager.Instance.enterBlackScreen(destination);
+
+        }
     }
 
     public override void Start()

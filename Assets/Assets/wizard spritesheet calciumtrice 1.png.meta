@@ -303,7 +303,7 @@ TextureImporter:
       213: 8739618010570353685
     second: wizard spritesheet calciumtrice 1_99
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -324,6 +324,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -362,6 +363,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -377,6 +379,30 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -2500,6 +2526,107 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      wizard spritesheet calciumtrice 1_33: 1221636809058063359
+      wizard spritesheet calciumtrice 1_31: -1399587031361354667
+      wizard spritesheet calciumtrice 1_43: 7448346021052121852
+      wizard spritesheet calciumtrice 1_61: -6459802117915914417
+      wizard spritesheet calciumtrice 1_7: 2390178002427130508
+      wizard spritesheet calciumtrice 1_8: -693163282585027285
+      wizard spritesheet calciumtrice 1_47: -6821983645932520447
+      wizard spritesheet calciumtrice 1_10: -7465182887755443681
+      wizard spritesheet calciumtrice 1_74: 1014726742841077446
+      wizard spritesheet calciumtrice 1_85: -3058345397012740843
+      wizard spritesheet calciumtrice 1_77: 5624450518863669317
+      wizard spritesheet calciumtrice 1_76: -8222909969996171413
+      wizard spritesheet calciumtrice 1_0: 8889739749600850804
+      wizard spritesheet calciumtrice 1_62: 147914970793257672
+      wizard spritesheet calciumtrice 1_86: -2828446835894201763
+      wizard spritesheet calciumtrice 1_72: 2223734279232563441
+      wizard spritesheet calciumtrice 1_24: -3330300206820461795
+      wizard spritesheet calciumtrice 1_38: -2944293574509765730
+      wizard spritesheet calciumtrice 1_36: 714002905794845307
+      wizard spritesheet calciumtrice 1_57: 467087987155521723
+      wizard spritesheet calciumtrice 1_17: 3566286840598790329
+      wizard spritesheet calciumtrice 1_23: 5213395331526479822
+      wizard spritesheet calciumtrice 1_54: 4618415890837501775
+      wizard spritesheet calciumtrice 1_49: -5160802686726943467
+      wizard spritesheet calciumtrice 1_44: -8287201558180422520
+      wizard spritesheet calciumtrice 1_12: 3560052830926960785
+      wizard spritesheet calciumtrice 1_95: -6716248606912944012
+      wizard spritesheet calciumtrice 1_90: 419185442935132409
+      wizard spritesheet calciumtrice 1_73: -6223589332435622083
+      wizard spritesheet calciumtrice 1_80: 7058419584663556546
+      wizard spritesheet calciumtrice 1_94: -1399291107106343173
+      wizard spritesheet calciumtrice 1_16: 3939391457665724545
+      wizard spritesheet calciumtrice 1_89: 2101836893350251319
+      wizard spritesheet calciumtrice 1_11: -6647862735360988690
+      wizard spritesheet calciumtrice 1_41: 5430754703929476520
+      wizard spritesheet calciumtrice 1_55: 3030668266135851781
+      wizard spritesheet calciumtrice 1_51: -6776301946905452794
+      wizard spritesheet calciumtrice 1_20: 2131129043003746342
+      wizard spritesheet calciumtrice 1_91: 995285766120397280
+      wizard spritesheet calciumtrice 1_25: 2805719009208425365
+      wizard spritesheet calciumtrice 1_21: -5216625883615805255
+      wizard spritesheet calciumtrice 1_79: 2061685233704207245
+      wizard spritesheet calciumtrice 1_98: 6303722858867107858
+      wizard spritesheet calciumtrice 1_40: -3150363366806049105
+      wizard spritesheet calciumtrice 1_34: -8739250838300921624
+      wizard spritesheet calciumtrice 1_81: 5707185267567777414
+      wizard spritesheet calciumtrice 1_35: 465608507474936657
+      wizard spritesheet calciumtrice 1_64: -5531052578801900594
+      wizard spritesheet calciumtrice 1_32: 2845653173933979746
+      wizard spritesheet calciumtrice 1_75: 5877390380664987332
+      wizard spritesheet calciumtrice 1_26: 1284707641579086223
+      wizard spritesheet calciumtrice 1_4: 3268140753501929372
+      wizard spritesheet calciumtrice 1_6: 1023055203166112252
+      wizard spritesheet calciumtrice 1_19: -5948335465350009105
+      wizard spritesheet calciumtrice 1_58: 2220160354654463659
+      wizard spritesheet calciumtrice 1_1: 526296762875046812
+      wizard spritesheet calciumtrice 1_37: -51775320310449172
+      wizard spritesheet calciumtrice 1_96: 3408558771940065095
+      wizard spritesheet calciumtrice 1_2: 6954245493108322420
+      wizard spritesheet calciumtrice 1_18: -269078779321404890
+      wizard spritesheet calciumtrice 1_13: 749126432074809162
+      wizard spritesheet calciumtrice 1_65: 2729090913428244719
+      wizard spritesheet calciumtrice 1_63: 329128998123087871
+      wizard spritesheet calciumtrice 1_69: 4615767971654981734
+      wizard spritesheet calciumtrice 1_5: 2773484643908875723
+      wizard spritesheet calciumtrice 1_59: -3239594105859122160
+      wizard spritesheet calciumtrice 1_97: 1909908606180372121
+      wizard spritesheet calciumtrice 1_92: 433657218173833336
+      wizard spritesheet calciumtrice 1_82: -2376539886084489284
+      wizard spritesheet calciumtrice 1_39: 2229439744738457026
+      wizard spritesheet calciumtrice 1_66: -6704615637045080434
+      wizard spritesheet calciumtrice 1_84: -8134986633644922366
+      wizard spritesheet calciumtrice 1_22: -2314373701488649405
+      wizard spritesheet calciumtrice 1_29: -3297488948164328207
+      wizard spritesheet calciumtrice 1_14: -7545444764091233273
+      wizard spritesheet calciumtrice 1_71: -6487360197701988503
+      wizard spritesheet calciumtrice 1_93: -4954509427834435148
+      wizard spritesheet calciumtrice 1_78: -4359640014943961187
+      wizard spritesheet calciumtrice 1_45: -803011500516207955
+      wizard spritesheet calciumtrice 1_68: 6136659827366642261
+      wizard spritesheet calciumtrice 1_27: 7625998431423465640
+      wizard spritesheet calciumtrice 1_42: -6648797769017236191
+      wizard spritesheet calciumtrice 1_60: -1838410095931639848
+      wizard spritesheet calciumtrice 1_30: 6759083719726521004
+      wizard spritesheet calciumtrice 1_52: -3691542183504208969
+      wizard spritesheet calciumtrice 1_87: 1948979674891763458
+      wizard spritesheet calciumtrice 1_48: -3050946263003572128
+      wizard spritesheet calciumtrice 1_83: 5430259877586041605
+      wizard spritesheet calciumtrice 1_50: 805051083120401111
+      wizard spritesheet calciumtrice 1_9: 6989595153222212873
+      wizard spritesheet calciumtrice 1_46: -7799796303654781364
+      wizard spritesheet calciumtrice 1_53: -4306342326909736493
+      wizard spritesheet calciumtrice 1_99: 8739618010570353685
+      wizard spritesheet calciumtrice 1_3: -4506497997403572985
+      wizard spritesheet calciumtrice 1_28: 1435513789851480809
+      wizard spritesheet calciumtrice 1_70: 810696423538431435
+      wizard spritesheet calciumtrice 1_67: -134408965179177928
+      wizard spritesheet calciumtrice 1_56: 5919610457020611447
+      wizard spritesheet calciumtrice 1_88: -4654903216229135192
+      wizard spritesheet calciumtrice 1_15: 6872957621283712555
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

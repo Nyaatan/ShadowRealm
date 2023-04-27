@@ -65,8 +65,8 @@ MonoBehaviour:
   maxRoomSize: {x: 128, y: 14}
   minFloors: 1
   maxFloors: 3
-  minRooms: 1
-  maxRooms: 1
+  minRooms: 10
+  maxRooms: 20
   noRoofOnTop: 0
   GeneratorData:
     scale: 0.28

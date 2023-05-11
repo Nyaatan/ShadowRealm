@@ -22,7 +22,7 @@ public class MultiplayerUI : MonoBehaviour
         }
     }
 
-    void Close()
+    public void Close()
     {
         GameManager.Instance.player.GetComponent<PlayerMovement>().enabled = true;
         gameObject.SetActive(false);

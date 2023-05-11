@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Net;
 
 public class Multiplayer : Waypoint
 {
@@ -13,9 +14,7 @@ public class Multiplayer : Waypoint
     {
         obj.GetComponent<Player>().lastInteraction = this;
         OpenMenu(obj);
-        //dungeon.GetComponent<Dungeon>().schema = schema;
-        //bool result = await networkManager.Host();
-        //if (result) GameManager.Instance.enterBlackScreen(null);
+        
     }
 
     public async void OpenMenu(GameObject obj)
@@ -31,13 +30,28 @@ public class Multiplayer : Waypoint
         base.Start();
     }
 
-    public void Host()
+    public async void Host()
     {
-        Debug.Log("Hosting");
+        bool result = await networkManager.Host();
+        if (result)
+        {
+            multiplayerUI.GetComponent<MultiplayerUI>().Close();
+            dungeon.GetComponent<Dungeon>().schema = schema;
+            GameManager.Instance.enterBlackScreen(null);
+        }
+        multiplayerUI.GetComponent<MultiplayerUI>().Close();
     }
 
-    public void Connect(string IPtext)
+    public async void Connect(string IPtext)
     {
-        Debug.Log("Connecting to" + IPtext);
+        IPEndPoint ip = new IPEndPoint(IPAddress.Parse(IPtext), networkManager.tcpPort);
+        bool result = await networkManager.Connect(ip);
+        if (result)
+        {
+            multiplayerUI.GetComponent<MultiplayerUI>().Close();
+            dungeon.GetComponent<Dungeon>().schema = schema;
+            GameManager.Instance.enterBlackScreen(null);
+        }
+        multiplayerUI.GetComponent<MultiplayerUI>().Close();
     }
 }

@@ -66,11 +66,14 @@ public class NetworkManager : MonoBehaviour
         return false;
     }
 
-    private async Task<bool> Connect(IPEndPoint server)
+    public async Task<bool> Connect(IPEndPoint server)
     {
         try
         {
-            tcpClient = new TcpClient(server);
+            tcpClient = new TcpClient();
+            Debug.Log("Connecting to " + server.ToString());
+            tcpClient.Connect(server);
+            Debug.Log("Connected");
             NetworkStream stream = tcpClient.GetStream();
             byte[] buffer = new byte[1];
             stream.Read(buffer, 0, 1);
@@ -79,9 +82,11 @@ public class NetworkManager : MonoBehaviour
 
         catch (SocketException e)
         {
+            Debug.Log(e.ToString());
             tcpClient = null;
             inSession = false;
         }
+        Debug.Log("Connection to " + server.ToString() + " failed");
         return false;
     }
 

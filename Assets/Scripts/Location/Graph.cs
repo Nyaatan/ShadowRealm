@@ -41,7 +41,7 @@ public class Graph
             for (int i = 0; i < graphData.nodeTypes.Count; ++i) if (UnityEngine.Random.Range(0f, 1f) < graphData.nodeTypeChances[i]) node.type = graphData.nodeTypes[i];
             if(bossNode.depth < node.depth) bossNode = node;
         }
-        bossNode.type = NodeType.BOSS;
+        if(!graphData.isMultiplayer) bossNode.type = NodeType.BOSS;
     }
 
     public Node GetNodeById(int id)
@@ -235,6 +235,7 @@ public class GraphData
     public float breakWallChance = 0.5f;
     public List<NodeType> nodeTypes = new List<NodeType>() { NodeType.TREASURE, NodeType.CHALLENGE };
     public List<float> nodeTypeChances = new List<float>(2);
+    public bool isMultiplayer = false;
 }
 
 public enum NodeType

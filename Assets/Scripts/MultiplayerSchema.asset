@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54111be244ad9b942abbc514a8e4e91e, type: 3}
-  m_Name: DefaultSchema
+  m_Name: MultiplayerSchema
   m_EditorClassIdentifier: 
   environment: 1
   RoomData:
@@ -64,9 +64,9 @@ MonoBehaviour:
   minRoomSize: {x: 128, y: 14}
   maxRoomSize: {x: 128, y: 14}
   minFloors: 1
-  maxFloors: 3
-  minRooms: 5
-  maxRooms: 20
+  maxFloors: 1
+  minRooms: 1
+  maxRooms: 1
   noRoofOnTop: 0
   GeneratorData:
     scale: 0.28
@@ -75,20 +75,19 @@ MonoBehaviour:
     lacunarity: 0.3
     alifConstant: 30.034899
   GraphData:
-    layers: 7
-    minlayers: 3
+    layers: 1
+    minlayers: 1
     startLayer: 0
-    nodes: 17
-    maxWidth: 20
-    neighborUpChance: 0.5
-    neighborDownChance: 0.5
-    neighborLeftChance: 0.3
-    neighborRightChance: 1
-    breakWallChance: 0.5
-    nodeTypes: 0200000001000000
-    nodeTypeChances:
-    - 0.1
-    - 0.1
+    nodes: 1
+    maxWidth: 1
+    neighborUpChance: 0
+    neighborDownChance: 0
+    neighborLeftChance: 0
+    neighborRightChance: 0
+    breakWallChance: 0
+    nodeTypes: 
+    nodeTypeChances: []
+    isMultiplayer: 1
   bossRoomData:
     size: {x: 64, y: 16}
     minFloorHeight: 3

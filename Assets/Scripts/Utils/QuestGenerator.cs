@@ -30,7 +30,7 @@ public class QuestGenerator : MonoBehaviour
 
         foreach (string tag in tags) if (text.Contains(tag))
             {
-                Debug.Log(tag);
+                //Debug.Log(tag);
                 switch (tag)
                 {
                     case "bossType":

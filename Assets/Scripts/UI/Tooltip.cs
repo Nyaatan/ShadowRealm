@@ -13,7 +13,6 @@ public class Tooltip : MonoBehaviour
 
     public void ShowTooltip(string text)
     {
-
         gameObject.SetActive(true);
 
         tooltipText.text = text;

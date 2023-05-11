@@ -277,7 +277,9 @@ public class Dungeon : MonoBehaviour, Location
         GameManager.Instance.player.GetComponent<Player>().lastInteraction = null;
         GameManager.Instance.mainCamera.GetComponent<CameraController>().warpToTarget();
 
-        if(room.node.type == NodeType.BOSS) 
+        if (schema.GraphData.isMultiplayer) KillAll();
+
+        if (room.node.type == NodeType.BOSS) 
             foreach (GameObject obj in roomObjectsOnScreen)
                 if (obj.GetComponentInChildren<Waypoint>() != null) 
                     obj.GetComponentInChildren<Waypoint>().interactable = false;

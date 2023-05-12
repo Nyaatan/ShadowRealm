@@ -73,21 +73,24 @@
       "dependencies": {}
     },
     "com.unity.2d.tilemap.extras": {
-      "version": "2.0.0",
+      "version": "2.2.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.tilemap": "1.0.0",
-        "com.unity.2d.tilemap": "1.0.0"
+        "com.unity.2d.tilemap": "1.0.0",
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "1.7.1",
+      "version": "1.13.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0"
+        "com.unity.nuget.newtonsoft-json": "2.0.0",
+        "com.unity.services.core": "1.0.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -137,6 +140,15 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.services.core": {
+      "version": "1.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.test-framework": {
       "version": "1.1.29",
       "depth": 0,
@@ -158,7 +170,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.5.6",
+      "version": "1.5.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -192,6 +204,13 @@
         "com.unity.modules.physics2d": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "net.tomweiland.riptide": {
+      "version": "https://github.com/RiptideNetworking/Riptide.git?path=/Packages/Core#2.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "bb252ba2ea4bd1314d3f8f60bea490418635d06e"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

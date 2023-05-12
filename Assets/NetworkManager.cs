@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -15,9 +16,10 @@ public class NetworkManager : MonoBehaviour
 
     public bool inSession = false;
 
+
     public async Task<bool> Host()
     {
-        IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 13);
+        IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, tcpPort);
         tcpListener = new TcpListener(ipEndPoint);
         try
         {
@@ -90,6 +92,48 @@ public class NetworkManager : MonoBehaviour
         return false;
     }
 
+    public async Task<bool> SendWorldData(int data)
+    {
+        Debug.Log("SEND");
+        Debug.Log(data);
+        NetworkStream stream = tcpClient.GetStream();
+        byte[] message = new byte[6];
+        int[] seed = new int[1] { data };
+        Buffer.BlockCopy(seed, 0, message, 2, 4);
+        message[0] = (byte)MessageType.MESSAGE;
+        message[1] = (byte)ActionType.INFO;
+        stream.Write(message, 0, 6);
+        return true;
+    }
+
+    public async Task<int> ReceiveWorldData()
+    {
+        try
+        {
+            NetworkStream stream = tcpClient.GetStream();
+            byte[] buffer = new byte[6];
+            stream.Read(buffer, 0, 6);
+            if(buffer[0] == (byte)MessageType.MESSAGE && buffer[1] == (byte)ActionType.INFO)
+            {
+                int[] seed = new int[1];
+                Buffer.BlockCopy(buffer, 2, seed, 0, 4);
+                Debug.Log("REC");
+                Debug.Log(seed[0]);
+                return seed[0];
+            }
+            else
+            {
+                throw new SocketException();
+            }
+        }
+        catch (SocketException e)
+        {
+            Debug.Log(e.ToString());
+            return -2137;
+        }
+
+    }
+
     enum MessageType : byte
     { 
         REQUEST = 0x00,
@@ -103,6 +147,7 @@ public class NetworkManager : MonoBehaviour
         MOVE = 0x00,
         ACTION = 0x01,
         HIT = 0x02,
+        INFO = 0x69,
         NONE = 0xFF
     }
 }

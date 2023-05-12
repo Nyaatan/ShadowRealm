@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 public class Multiplayer : Waypoint
 {
     public Schema schema;
     public NetworkManager networkManager;
     public GameObject multiplayerUI;
+
+    private Dungeon dung;
 
     public override async void Interact(GameObject obj)
     {
@@ -28,6 +31,7 @@ public class Multiplayer : Waypoint
     public override void Start()
     {
         base.Start();
+        dung = dungeon.GetComponent<Dungeon>();
     }
 
     public async void Host()
@@ -36,7 +40,12 @@ public class Multiplayer : Waypoint
         if (result)
         {
             multiplayerUI.GetComponent<MultiplayerUI>().Close();
-            dungeon.GetComponent<Dungeon>().schema = schema;
+            dung.schema = schema;
+            int seed = Guid.NewGuid().GetHashCode();
+            UnityEngine.Random.seed = seed;
+            
+            dung.Create();
+            networkManager.SendWorldData(seed);
             GameManager.Instance.enterBlackScreen(null);
         }
         multiplayerUI.GetComponent<MultiplayerUI>().Close();
@@ -49,7 +58,20 @@ public class Multiplayer : Waypoint
         if (result)
         {
             multiplayerUI.GetComponent<MultiplayerUI>().Close();
-            dungeon.GetComponent<Dungeon>().schema = schema;
+            object rec = await networkManager.ReceiveWorldData();
+            if ((int)rec == -2137)
+            {
+                multiplayerUI.GetComponent<MultiplayerUI>().Close();
+                return;
+            }
+            int seed = (int)rec;
+            Debug.Log(seed);
+            
+            UnityEngine.Random.seed = seed;
+            Debug.Log(UnityEngine.Random.seed);
+            
+            dung.schema = schema;
+            dung.Create();
             GameManager.Instance.enterBlackScreen(null);
         }
         multiplayerUI.GetComponent<MultiplayerUI>().Close();

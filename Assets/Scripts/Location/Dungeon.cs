@@ -87,6 +87,7 @@ public class Dungeon : MonoBehaviour, Location
     {
         currentRoomId = 1;
         schema.GeneratorData.alifConstant = Random.Range(0f, 1f);
+
         schema.GraphData.nodes = Random.Range(schema.minRooms, schema.maxRooms + 1);
         schema.GraphData.layers = Random.Range(schema.minFloors, schema.maxFloors + 1);
 
@@ -126,9 +127,10 @@ public class Dungeon : MonoBehaviour, Location
         }
 
         foreach (Node node in rooms.Keys) ((Room)rooms[node]).CalculateWaypoints();
-
         isCreated = true;
         nodes = nodeGraph.nodes.Count;
+        Debug.Log("DUPA");
+        Debug.Log(schema.GeneratorData.alifConstant);
     }
 
     internal void BossKilled()

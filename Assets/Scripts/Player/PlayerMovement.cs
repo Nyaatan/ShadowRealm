@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Riptide;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float horizontalMove = 0;
     public float runSpeed = 40f;
     bool jump = false;
-
+    Player player;
     public Animator animator;
 
     // Update is called once per frame
@@ -29,7 +30,22 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-
+        if(EntityMP.inSession) SendMovement();
         jump = false;
     }
+
+    private void Start()
+    {
+        player = gameObject.GetComponent<EntityMP>() as Player;
+    }
+
+    private void SendMovement()
+    {
+        
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerMovement);
+        message.AddUShort(player.id);
+        message.AddVector2(transform.position);
+        NetworkManager.Singleton.Client.Send(message);
+    }
+
 }

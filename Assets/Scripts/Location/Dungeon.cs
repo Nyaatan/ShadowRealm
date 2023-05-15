@@ -96,7 +96,7 @@ public class Dungeon : MonoBehaviour, Location
 
         foreach (Node node in nodeGraph.nodes)
         {
-            Debug.Log(node);
+            //Debug.Log(node);
             Vector2 size = GetRandomRoomSize();
             RoomData data = schema.RoomData.Copy();
             data.size = size;
@@ -129,8 +129,8 @@ public class Dungeon : MonoBehaviour, Location
         foreach (Node node in rooms.Keys) ((Room)rooms[node]).CalculateWaypoints();
         isCreated = true;
         nodes = nodeGraph.nodes.Count;
-        Debug.Log("DUPA");
-        Debug.Log(schema.GeneratorData.alifConstant);
+       // Debug.Log("DUPA");
+        //Debug.Log(schema.GeneratorData.alifConstant);
     }
 
     internal void BossKilled()
@@ -163,14 +163,14 @@ public class Dungeon : MonoBehaviour, Location
     void Start()
     {
         schema = Instantiate(schema);
-        Debug.Log(schema.bossRoomData.bossData.nextPhaseData);
+        //Debug.Log(schema.bossRoomData.bossData.nextPhaseData);
         schema.bossRoomData.bossData.nextPhaseData = schema.bossRoomData.bossData.Copy();
         schema.bossRoomData.bossData.nextPhaseData.scale *= 1.3f;
         schema.bossRoomData.bossData.nextPhaseData.bossPowerModifier *= 1.5f;
         schema.bossRoomData.bossData.nextPhaseData.speed *= 1.5f;
         schema.bossRoomData.bossData.nextPhaseData.burstCount += 2;
         schema.bossRoomData.bossData.nextPhaseData.nGlyphs += 1;
-        Debug.Log(schema.bossRoomData.bossData.nextPhaseData);
+        //Debug.Log(schema.bossRoomData.bossData.nextPhaseData);
     }
 
     public Vector2 ScaledVector(float x, float y) { return new Vector2(x * scale, y * scale); }
@@ -202,7 +202,7 @@ public class Dungeon : MonoBehaviour, Location
         Room lastRoom = GetRoomById(currentRoomId);
         Room room = GetRoomById(id);
 
-        Debug.Log(room.node);
+        //Debug.Log(room.node);
 
         currentRoomId = id;
         ObjectPooler.Instance.ResetPool();

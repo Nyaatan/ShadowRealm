@@ -91,11 +91,11 @@ public class Enemy : Entity
     private void SetData()
     {
         transform.localScale = data.scale;
-        Debug.Log(data.scale);
+        //Debug.Log(data.scale);
         maxHealth = data.maxHealth;
         if (data.allowedTypes.Count > 0) type = data.allowedTypes[Random.Range(0, data.allowedTypes.Count)];
         else type = EnemyType.GENERIC;
-        Debug.Log(data.animatorOverriderId);
+       // Debug.Log(data.animatorOverriderId);
         foreach (Affinity affinity in GameManager.Instance.affinities) if (affinity.element == (pickableInHand as Glyph).data.element[0]) { this.affinity = affinity; break; }
     }
 
@@ -103,7 +103,7 @@ public class Enemy : Entity
     public void FixedUpdate()
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-        Debug.Log(horizontalMove * Time.fixedDeltaTime);
+        //Debug.Log(horizontalMove * Time.fixedDeltaTime);
         jump = false;
     }
 

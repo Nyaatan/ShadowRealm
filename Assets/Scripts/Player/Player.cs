@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Entity, TimedObject
+public class Player : EntityMP, TimedObject
 
 {
     public Interactable lastInteraction;
@@ -15,7 +15,7 @@ public class Player : Entity, TimedObject
 
     public HealthBar healthBar;
     public InventoryUI inventoryUI;
-
+    
     // Start is called before the first frame update
     public override void Start()
     {
@@ -158,4 +158,5 @@ public class Player : Entity, TimedObject
         GetComponent<PlayerMovement>().enabled = true;
         animator.SetBool("Death", false);
     }
+
 }

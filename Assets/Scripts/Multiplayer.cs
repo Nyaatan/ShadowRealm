@@ -13,20 +13,27 @@ public class Multiplayer : Waypoint
 
     private Dungeon dung;
 
-    public override async void Interact(GameObject obj)
+    public override void Interact(GameObject obj)
     {
         obj.GetComponent<Player>().lastInteraction = this;
         OpenMenu(obj);
         
     }
 
-    public async void OpenMenu(GameObject obj)
+    public void OpenMenu(GameObject obj)
     {
         obj.GetComponent<PlayerMovement>().horizontalMove = 0;
         obj.GetComponent<PlayerMovement>().enabled = false;
         multiplayerUI.gameObject.SetActive(true);
     }
 
+    public void Enter()
+    {
+        multiplayerUI.GetComponent<MultiplayerUI>().Close();
+        dung.schema = schema;
+
+        GameManager.Instance.enterBlackScreen(destination);
+    }
 
     public override void Start()
     {
@@ -34,46 +41,13 @@ public class Multiplayer : Waypoint
         dung = dungeon.GetComponent<Dungeon>();
     }
 
-    public async void Host()
+    public void Host()
     {
-        bool result = await networkManager.Host();
-        if (result)
-        {
-            multiplayerUI.GetComponent<MultiplayerUI>().Close();
-            dung.schema = schema;
-            int seed = Guid.NewGuid().GetHashCode();
-            UnityEngine.Random.seed = seed;
-            
-            dung.Create();
-            networkManager.SendWorldData(seed);
-            GameManager.Instance.enterBlackScreen(null);
-        }
-        multiplayerUI.GetComponent<MultiplayerUI>().Close();
+        networkManager.StartHost();
     }
 
-    public async void Connect(string IPtext)
+    public void Connect(string IPtext)
     {
-        IPEndPoint ip = new IPEndPoint(IPAddress.Parse(IPtext), networkManager.tcpPort);
-        bool result = await networkManager.Connect(ip);
-        if (result)
-        {
-            multiplayerUI.GetComponent<MultiplayerUI>().Close();
-            object rec = await networkManager.ReceiveWorldData();
-            if ((int)rec == -2137)
-            {
-                multiplayerUI.GetComponent<MultiplayerUI>().Close();
-                return;
-            }
-            int seed = (int)rec;
-            Debug.Log(seed);
-            
-            UnityEngine.Random.seed = seed;
-            Debug.Log(UnityEngine.Random.seed);
-            
-            dung.schema = schema;
-            dung.Create();
-            GameManager.Instance.enterBlackScreen(null);
-        }
-        multiplayerUI.GetComponent<MultiplayerUI>().Close();
+        networkManager.JoinGame(IPtext);
     }
 }

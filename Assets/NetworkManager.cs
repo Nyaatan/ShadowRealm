@@ -1,153 +1,140 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Sockets;
+using Riptide.Utils;
+using Riptide;
 using System;
+using UnityEngine;
+using System.Collections.Generic;
+
+internal enum MessageId : ushort
+{
+    SpawnPlayer = 1,
+    PlayerMovement,
+    Seed
+}
 
 public class NetworkManager : MonoBehaviour
 {
-    private TcpClient tcpClient;
-    private TcpListener tcpListener;
-    private UdpClient udpClient;
-    public int udpPort = 2137;
-    public int tcpPort = 2138;
-
-    public bool inSession = false;
-
-
-    public async Task<bool> Host()
+    private static NetworkManager _singleton;
+    public static NetworkManager Singleton
     {
-        IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, tcpPort);
-        tcpListener = new TcpListener(ipEndPoint);
-        try
+        get => _singleton;
+        private set
         {
-            tcpListener.Start();
-            Debug.Log("Hosting");
-            tcpClient = await tcpListener.AcceptTcpClientAsync();
-            Debug.Log("Connection request received");
-            if (!inSession)
+            if (_singleton == null)
+                _singleton = value;
+            else if (_singleton != value)
             {
-                return await SetSession();
-            }
-            else
-            {
-                return await RejectSession();
+                Debug.Log($"{nameof(NetworkManager)} instance already exists, destroying object!");
+                Destroy(value);
             }
         }
-        catch (SocketException e)
-        {
-            tcpClient = null;
-            inSession = false;
-            Host();
-        }
-        return false;
     }
 
-    private async Task<bool> SetSession()
+    [SerializeField] private ushort port;
+    [SerializeField] private ushort maxPlayers=2;
+    [SerializeField] public Multiplayer multiplayer;
+    [Header("Prefabs")]
+    [SerializeField] private EntityMP playerPrefab;
+    [SerializeField] private EntityMP localPlayerPrefab;
+
+    public EntityMP PlayerPrefab => playerPrefab;
+    public EntityMP LocalPlayerPrefab => localPlayerPrefab;
+
+    public int seed;
+
+    internal Server Server { get; private set; }
+    internal Client Client { get; private set; }
+
+    private void Awake()
     {
-        Debug.Log("Connecting");
-        NetworkStream stream = tcpClient.GetStream();
-        byte[] mess = new byte[1] { (byte)MessageType.ACCEPT };
-        stream.Write(mess, 0, 1);
-        inSession = true;
-        Debug.Log("Session established");
-        return true;
+        Singleton = this;
     }
 
-    private async Task<bool> RejectSession()
+    private void Start()
     {
-        Debug.Log("Rejecting");
-        NetworkStream stream = tcpClient.GetStream();
-        byte[] mess = new byte[1] { (byte)MessageType.REJECT };
-        stream.Write(mess, 0, 1);
-        tcpClient.Close();
-        tcpClient = null;
-        Debug.Log("Session rejected");
-        return false;
+        RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
+        seed = Guid.NewGuid().GetHashCode();
+        Server = new Server();
+        Server.ClientConnected += PlayerJoined;
+        Server.RelayFilter = new MessageRelayFilter(typeof(MessageId), MessageId.SpawnPlayer, MessageId.PlayerMovement);
+
+        Client = new Client();
+        Client.Connected += DidConnect;
+        Client.ConnectionFailed += FailedToConnect;
+        Client.ClientDisconnected += PlayerLeft;
+        Client.Disconnected += DidDisconnect;
+
     }
 
-    public async Task<bool> Connect(IPEndPoint server)
+    private void FixedUpdate()
     {
-        try
-        {
-            tcpClient = new TcpClient();
-            Debug.Log("Connecting to " + server.ToString());
-            tcpClient.Connect(server);
-            Debug.Log("Connected");
-            NetworkStream stream = tcpClient.GetStream();
-            byte[] buffer = new byte[1];
-            stream.Read(buffer, 0, 1);
-            if (buffer[0] == (byte)MessageType.ACCEPT) return true;
-        }
+        if (Server.IsRunning)
+            Server.Update();
 
-        catch (SocketException e)
-        {
-            Debug.Log(e.ToString());
-            tcpClient = null;
-            inSession = false;
-        }
-        Debug.Log("Connection to " + server.ToString() + " failed");
-        return false;
+        Client.Update();
     }
 
-    public async Task<bool> SendWorldData(int data)
+    private void OnApplicationQuit()
     {
-        Debug.Log("SEND");
-        Debug.Log(data);
-        NetworkStream stream = tcpClient.GetStream();
-        byte[] message = new byte[6];
-        int[] seed = new int[1] { data };
-        Buffer.BlockCopy(seed, 0, message, 2, 4);
-        message[0] = (byte)MessageType.MESSAGE;
-        message[1] = (byte)ActionType.INFO;
-        stream.Write(message, 0, 6);
-        return true;
+        Server.Stop();
+        Client.Disconnect();
     }
 
-    public async Task<int> ReceiveWorldData()
+    internal void StartHost()
     {
-        try
-        {
-            NetworkStream stream = tcpClient.GetStream();
-            byte[] buffer = new byte[6];
-            stream.Read(buffer, 0, 6);
-            if(buffer[0] == (byte)MessageType.MESSAGE && buffer[1] == (byte)ActionType.INFO)
+        Server.Start(port, maxPlayers);
+        Client.Connect($"127.0.0.1:{port}");
+        seed = Guid.NewGuid().GetHashCode();
+    }
+
+    internal void JoinGame(string ipString)
+    {
+        Client.Connect($"{ipString}:{port}");
+    }
+
+    internal void LeaveGame()
+    {
+        Server.Stop();
+        Client.Disconnect();
+    }
+
+    private void DidConnect(object sender, EventArgs e)
+    {
+        Debug.Log(Client.Id);
+        Player.Spawn(Client.Id, new Vector2(60, 10), true);
+    }
+
+    private void FailedToConnect(object sender, EventArgs e)
+    {
+        //UIManager.Singleton.BackToMain();
+    }
+
+    private void PlayerJoined(object sender, ServerConnectedEventArgs e)
+    {
+        Debug.Log(Server.Clients);
+        Player.SendSeed(seed, e.Client.Id);
+        foreach (EntityMP player in Player.List.Values)
+            if (player.id != e.Client.Id)
             {
-                int[] seed = new int[1];
-                Buffer.BlockCopy(buffer, 2, seed, 0, 4);
-                Debug.Log("REC");
-                Debug.Log(seed[0]);
-                return seed[0];
+                player.SendSpawn(e.Client.Id, new Vector2(60, 10));
             }
-            else
-            {
-                throw new SocketException();
-            }
-        }
-        catch (SocketException e)
-        {
-            Debug.Log(e.ToString());
-            return -2137;
-        }
-
+                
     }
 
-    enum MessageType : byte
-    { 
-        REQUEST = 0x00,
-        ACCEPT = 0x01,
-        REJECT = 0x02,
-        MESSAGE = 0x03
-    }
-
-    enum ActionType : byte
+    private void PlayerLeft(object sender, ClientDisconnectedEventArgs e)
     {
-        MOVE = 0x00,
-        ACTION = 0x01,
-        HIT = 0x02,
-        INFO = 0x69,
-        NONE = 0xFF
+        Destroy(Player.List[e.Id].gameObject);
+    }
+
+    private void DidDisconnect(object sender, DisconnectedEventArgs e)
+    {
+        foreach (Player player in Player.List.Values)
+            Destroy(player.gameObject);
+
+        //UIManager.Singleton.BackToMain();
+    }
+
+    public void Enter()
+    {
+        multiplayer.Enter();
     }
 }

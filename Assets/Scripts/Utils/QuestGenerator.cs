@@ -46,7 +46,7 @@ public class QuestGenerator : MonoBehaviour
                             case BossType.COUNT:
                                 break;
                         }
-                        Debug.Log(bossType);
+                        //Debug.Log(bossType);
                         text = text.Replace("{bossType}", bossType.ToString().ToUpper());
                         
                         break;

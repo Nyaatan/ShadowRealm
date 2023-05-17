@@ -27,7 +27,7 @@ public class Glyph : Item
         glyph.data.vector = new Vector2(UnityEngine.Random.Range(minVectorBoundary.x, maxVectorBoundary.x), UnityEngine.Random.Range(minVectorBoundary.y, maxVectorBoundary.y));
         glyph.data.tier = (short) UnityEngine.Random.Range((int) minMaxTier.x, (int) minMaxTier.y + 1);
         glyph.calculateDataFromVector();
-        glyph.CalculateSpellData();
+        glyph.spellPrototype.data = glyph.CalculateSpellData();
         instance.GetComponent<Rigidbody2D>().simulated = true;
         return instance;
     }
@@ -36,10 +36,10 @@ public class Glyph : Item
         GameObject instance = Instantiate(GameManager.Instance.glyphPrototype);
         Glyph glyph = instance.GetComponent<Glyph>();
         glyph.data = Instantiate(glyph.data);
-        glyph.data.vector = -vector;
+        glyph.data.vector = vector;
         glyph.data.tier = tier;
         glyph.calculateDataFromVector();
-        glyph.CalculateSpellData();
+        glyph.spellPrototype.data = glyph.CalculateSpellData();
         instance.GetComponent<Rigidbody2D>().simulated = true;
         return instance;
     }
@@ -47,6 +47,8 @@ public class Glyph : Item
     {
         calculateElementFromVector();
         calculateNatureFromVector();
+        Debug.Log(data.element[0]);
+        Debug.Log(data.nature);
         spellPrototype.data.elements = data.element;
         spellPrototype.data.nature = data.nature;
     }
@@ -95,7 +97,7 @@ public class Glyph : Item
         spell.transform.position = user.gameObject.transform.position;
         spell.caster = user;
         spell.target = target;
-
+        //spell.data = CalculateSpellData();
         spell.Cast();
         isOnCooldown = true;
     }

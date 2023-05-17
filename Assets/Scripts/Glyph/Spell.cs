@@ -35,7 +35,6 @@ public class Spell : MonoBehaviour, TimedObject
 
             GetComponent<TTL>().ttl = 0.001f;
         }
-
         GetComponent<TTL>().start = true;
         //Debug.Log(GetComponent<TTL>().start);
     }
@@ -110,6 +109,7 @@ public class Spell : MonoBehaviour, TimedObject
     {
         isCasted = false;
         TriggerEffect(null);
+        Destroy(target);
     }
 }
 

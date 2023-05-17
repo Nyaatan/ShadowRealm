@@ -93,6 +93,7 @@ public class ObjectPooler : MonoBehaviour
     public GameObject Create(GameObject gameObject)
     {
         GameObject obj = Instantiate(gameObject);
+        obj.transform.parent = transform;
         obj.SetActive(false);
         usedQueue.Add(obj);
         return obj;
@@ -101,6 +102,7 @@ public class ObjectPooler : MonoBehaviour
     private void AddObject(GameObject prefab, Queue<GameObject> objectPool, string tag)
     {
         GameObject obj = Instantiate(prefab);
+        obj.transform.parent = transform;
         obj.layer = LayerMask.NameToLayer("Terrain");
         obj.SetActive(false);
         obj.name = tag;

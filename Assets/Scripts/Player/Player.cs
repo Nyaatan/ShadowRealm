@@ -16,6 +16,7 @@ public class Player : EntityMP, TimedObject
 
     public HealthBar healthBar;
     public InventoryUI inventoryUI;
+    public bool isLocal = false;
     
     // Start is called before the first frame update
     public override void Start()
@@ -55,7 +56,7 @@ public class Player : EntityMP, TimedObject
                 }
                 GameObject target = CreateTarget();
                 pickableInHand.Use(this, target);
-                SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data);
+                if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data);
                 ResetTriggers();
             }
             if (Input.GetKeyDown(KeyCode.G)) DropItem();

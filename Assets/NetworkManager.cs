@@ -130,8 +130,8 @@ public class NetworkManager : MonoBehaviour
     private void DidDisconnect(object sender, DisconnectedEventArgs e)
     {
         foreach (Player player in Player.List.Values)
-            Destroy(player.gameObject);
-
+            if (!player.isLocal) Destroy(player.gameObject);
+        GameManager.Instance.dungeon.EnterTavern();
         //UIManager.Singleton.BackToMain();
     }
 

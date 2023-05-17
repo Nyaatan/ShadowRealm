@@ -6677,6 +6677,7 @@ MonoBehaviour:
   animator: {fileID: 263375873}
   healthBar: {fileID: 2034560455}
   inventoryUI: {fileID: 21801963}
+  isLocal: 0
 --- !u!95 &263375873
 Animator:
   serializedVersion: 3
@@ -11810,6 +11811,7 @@ MonoBehaviour:
   animator: {fileID: 943745518}
   healthBar: {fileID: 2034560455}
   inventoryUI: {fileID: 21801963}
+  isLocal: 1
 --- !u!1001 &962123298
 PrefabInstance:
   m_ObjectHideFlags: 0

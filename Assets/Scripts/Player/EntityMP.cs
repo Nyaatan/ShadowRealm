@@ -50,7 +50,9 @@ public class EntityMP : Entity
 
         if (glyph.data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
         else animator.SetTrigger("SpellCast");
+        Debug.Log(glyph.data.vector);
         glyph.Use(this, CreateTarget(target));
+        //Destroy(glyph.gameObject);
     }
 
     private void Move(Vector2 newPosition)

@@ -133,7 +133,7 @@ public class Player : EntityMP, TimedObject
         ttl.ttl = 1f;
         ttl.parent = this;
         ttl.start = true;
-        healthBar.SetHealth(health);
+        if(isLocal) healthBar.SetHealth(health);
     }
     public override void Heal(float value)
     {
@@ -171,6 +171,12 @@ public class Player : EntityMP, TimedObject
         message.AddVector2(glyphData.vector);
         message.AddShort(glyphData.tier);
         NetworkManager.Singleton.Client.Send(message);
+    }
+
+    public void Reset()
+    {
+        health = maxHealth;
+        if (!isLocal) gameObject.SetActive(false);
     }
 
 }

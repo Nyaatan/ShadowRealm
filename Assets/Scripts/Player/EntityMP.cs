@@ -119,5 +119,17 @@ public class EntityMP : Entity
         NetworkManager.Singleton.Enter();
     }
 
-
+    [MessageHandler((ushort)MessageId.PlayerInput)]
+    private static void PlayerInput(ushort fromClientId, Message message)
+    {
+        Debug.Log("PLAYERINPUT " + fromClientId);
+        Player player = Player.List[fromClientId] as Player;
+        float move = message.GetFloat();
+        bool jump = message.GetBool();
+        Debug.Log(player.isLocal);
+        PlayerMovement contr = player.gameObject.GetComponent<PlayerMovement>();
+        contr.horizontalMove = move;
+        contr.jump = jump;
+        contr.ForceMove();
+    }
 }

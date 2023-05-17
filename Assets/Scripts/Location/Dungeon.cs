@@ -152,6 +152,7 @@ public class Dungeon : MonoBehaviour, Location
 
         GameManager.Instance.mainCamera.GetComponent<CameraController>().warpToTarget();
         isCreated = false;
+        NetworkManager.Singleton.LeaveGame();
         Enter(0);
     }
 

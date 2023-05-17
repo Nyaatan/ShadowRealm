@@ -9,7 +9,8 @@ internal enum MessageId : ushort
     SpawnPlayer,
     PlayerMovement,
     PlayerAttack,
-    Seed
+    Seed,
+    PlayerInput
 }
 
 public class NetworkManager : MonoBehaviour
@@ -41,6 +42,8 @@ public class NetworkManager : MonoBehaviour
     public EntityMP LocalPlayerPrefab => localPlayerPrefab;
 
     public int seed;
+
+    public string defaultConnectionIP = "127.0.0.1";
 
     internal Server Server { get; private set; }
     internal Client Client { get; private set; }
@@ -90,6 +93,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void JoinGame(string ipString)
     {
+        if (ipString == "") ipString = defaultConnectionIP;
         Client.Connect($"{ipString}:{port}");
     }
 
@@ -130,7 +134,8 @@ public class NetworkManager : MonoBehaviour
     private void DidDisconnect(object sender, DisconnectedEventArgs e)
     {
         foreach (Player player in Player.List.Values)
-            if (!player.isLocal) Destroy(player.gameObject);
+            if (!player.isLocal) player.Reset();
+        Player.List.Clear();
         GameManager.Instance.dungeon.EnterTavern();
         //UIManager.Singleton.BackToMain();
     }

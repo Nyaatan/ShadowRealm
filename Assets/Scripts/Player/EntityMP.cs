@@ -8,6 +8,7 @@ public class EntityMP : Entity
     internal static Dictionary<ushort, EntityMP> List = new Dictionary<ushort, EntityMP>();
     public ushort id;
     public static bool inSession = false;
+    public Animator animator;
     private void OnDestroy()
     {
         List.Remove(id);
@@ -30,10 +31,31 @@ public class EntityMP : Entity
             player.SendSpawn();
     }
 
+    public GameObject CreateTarget(Vector2 pos)
+    {
+        GameObject target = new GameObject("Target");
+        target.transform.position = pos;
+        target.transform.position += new Vector3(0, 0, transform.position.z);
+        return target;
+    }
+
+    private void Attack(Vector2 target, Vector2 glyphVector, short tier)
+    {
+        Debug.Log("DUPADUPA");
+        Debug.Log(tier);
+        Debug.Log(glyphVector);
+        Debug.Log("DUPADUPA");
+        
+        Glyph glyph = Glyph.GetFromValues(glyphVector, tier).GetComponent<Glyph>();
+
+        if (glyph.data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
+        else animator.SetTrigger("SpellCast");
+        glyph.Use(this, CreateTarget(target));
+    }
+
     private void Move(Vector2 newPosition)
     {
         transform.position = newPosition;
-        Debug.Log(newPosition);
     }
     private void SendSpawn()
     {
@@ -73,6 +95,20 @@ public class EntityMP : Entity
         //Debug.Log(playerId);
     }
 
+    [MessageHandler((ushort)MessageId.PlayerAttack)]
+    private static void PlayerAttack(Message message)
+    {
+        ushort playerId = message.GetUShort();
+        Vector2 targetTransform = message.GetVector2();
+        Vector2 glyphVector = message.GetVector2();
+        short tier = message.GetShort();
+        Debug.Log(glyphVector);
+        Debug.Log(tier);
+        if (List.TryGetValue(playerId, out EntityMP player))
+            player.Attack(targetTransform, glyphVector, tier);
+
+    }
+
     [MessageHandler((ushort)MessageId.Seed)]
     private static void SetSeed(Message message)
     {
@@ -80,4 +116,6 @@ public class EntityMP : Entity
         EntityMP.inSession = true;
         NetworkManager.Singleton.Enter();
     }
+
+
 }

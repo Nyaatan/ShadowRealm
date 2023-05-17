@@ -1,3 +1,4 @@
+using Riptide;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,7 +53,9 @@ public class Player : EntityMP, TimedObject
                     if (((Glyph)pickableInHand).data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
                     else animator.SetTrigger("SpellCast");
                 }
-                pickableInHand.Use(this, CreateTarget());
+                GameObject target = CreateTarget();
+                pickableInHand.Use(this, target);
+                SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data);
                 ResetTriggers();
             }
             if (Input.GetKeyDown(KeyCode.G)) DropItem();
@@ -157,6 +160,16 @@ public class Player : EntityMP, TimedObject
         Heal(maxHealth);
         GetComponent<PlayerMovement>().enabled = true;
         animator.SetBool("Death", false);
+    }
+
+    public void SendAttack(Vector2 target, GlyphData glyphData)
+    {
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerAttack);
+        message.AddUShort(id);
+        message.AddVector2(target);
+        message.AddVector2(glyphData.vector);
+        message.AddShort(glyphData.tier);
+        NetworkManager.Singleton.Client.Send(message);
     }
 
 }

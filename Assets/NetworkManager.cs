@@ -6,8 +6,9 @@ using System.Collections.Generic;
 
 internal enum MessageId : ushort
 {
-    SpawnPlayer = 1,
+    SpawnPlayer,
     PlayerMovement,
+    PlayerAttack,
     Seed
 }
 
@@ -55,7 +56,8 @@ public class NetworkManager : MonoBehaviour
         seed = Guid.NewGuid().GetHashCode();
         Server = new Server();
         Server.ClientConnected += PlayerJoined;
-        Server.RelayFilter = new MessageRelayFilter(typeof(MessageId), MessageId.SpawnPlayer, MessageId.PlayerMovement);
+        Server.RelayFilter = new MessageRelayFilter(typeof(MessageId), 
+            MessageId.SpawnPlayer, MessageId.PlayerMovement, MessageId.PlayerAttack, MessageId.Seed);
 
         Client = new Client();
         Client.Connected += DidConnect;

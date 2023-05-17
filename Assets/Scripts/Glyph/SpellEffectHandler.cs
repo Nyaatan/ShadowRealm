@@ -67,7 +67,7 @@ public class SpellEffectHandler : MonoBehaviour
     public void HandleDetections(List<GameObject> detections)
     {
         MakeVisualEffect(detections);
-        Debug.Log(detections.Count);
+        //Debug.Log(detections.Count);
         foreach (GameObject detection in detections)
         {
             Entity entity = detection.GetComponent<Entity>();

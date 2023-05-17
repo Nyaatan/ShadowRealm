@@ -6670,6 +6670,7 @@ MonoBehaviour:
   pickableInHand: {fileID: 0}
   floatDamage: {fileID: 0}
   id: 0
+  animator: {fileID: 263375873}
   lastInteraction: {fileID: 0}
   selected: 1
   scrollLockDefault: 0.1
@@ -11802,6 +11803,7 @@ MonoBehaviour:
   pickableInHand: {fileID: 0}
   floatDamage: {fileID: 0}
   id: 0
+  animator: {fileID: 943745518}
   lastInteraction: {fileID: 0}
   selected: 1
   scrollLockDefault: 0.1

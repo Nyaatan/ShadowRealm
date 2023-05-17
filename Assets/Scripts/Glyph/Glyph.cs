@@ -31,7 +31,18 @@ public class Glyph : Item
         instance.GetComponent<Rigidbody2D>().simulated = true;
         return instance;
     }
-
+    internal static GameObject GetFromValues(Vector2 vector, short tier)
+    {
+        GameObject instance = Instantiate(GameManager.Instance.glyphPrototype);
+        Glyph glyph = instance.GetComponent<Glyph>();
+        glyph.data = Instantiate(glyph.data);
+        glyph.data.vector = -vector;
+        glyph.data.tier = tier;
+        glyph.calculateDataFromVector();
+        glyph.CalculateSpellData();
+        instance.GetComponent<Rigidbody2D>().simulated = true;
+        return instance;
+    }
     public void calculateDataFromVector()
     {
         calculateElementFromVector();

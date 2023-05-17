@@ -107,7 +107,7 @@ public class Enemy : Entity
         jump = false;
     }
 
-    public override void ReceiveDamage(float value, GlyphData.Element[] elements)
+    public override void ReceiveDamage(float value, GlyphData.Element[] elements, bool mpSignal=false)
     {
         floatColor = Color.yellow;
         foreach (GlyphData.Element element in elements)

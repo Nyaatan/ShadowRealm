@@ -58,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerInput);
         message.AddFloat(horizontalMove);
-        Debug.Log("MOVE " + player.id + " " + horizontalMove);
         message.AddBool(jump);
         NetworkManager.Singleton.Client.Send(message);
     }

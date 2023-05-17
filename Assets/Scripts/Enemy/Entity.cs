@@ -31,7 +31,7 @@ public class Entity : MonoBehaviour
         
     }
 
-    public virtual void ReceiveDamage(float value, GlyphData.Element[] element)
+    public virtual void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal = false)
     {
         if (floatColor.Equals(new Color(0, 0, 0, 0))) floatColor = Color.yellow;
         floatDamage = Instantiate(GameManager.Instance.floatDamage, transform.position + new Vector3(0, 3, 0), Quaternion.identity);
@@ -49,7 +49,7 @@ public class Entity : MonoBehaviour
         onReceiveDamage();
     }
 
-    public virtual void Heal(float value)
+    public virtual void Heal(float value, bool mpSignal=false)
     {
         health = Mathf.Min(maxHealth, health + value);
         Debug.Log(this.gameObject + " received " + value + " healing");

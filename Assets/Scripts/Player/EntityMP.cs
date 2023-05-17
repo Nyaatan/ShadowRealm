@@ -41,11 +41,6 @@ public class EntityMP : Entity
 
     private void Attack(Vector2 target, Vector2 glyphVector, short tier)
     {
-        Debug.Log("DUPADUPA");
-        Debug.Log(tier);
-        Debug.Log(glyphVector);
-        Debug.Log("DUPADUPA");
-        
         Glyph glyph = Glyph.GetFromValues(glyphVector, tier).GetComponent<Glyph>();
 
         if (glyph.data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
@@ -122,7 +117,6 @@ public class EntityMP : Entity
     [MessageHandler((ushort)MessageId.PlayerInput)]
     private static void PlayerInput(ushort fromClientId, Message message)
     {
-        Debug.Log("PLAYERINPUT " + fromClientId);
         Player player = Player.List[fromClientId] as Player;
         float move = message.GetFloat();
         bool jump = message.GetBool();
@@ -131,5 +125,25 @@ public class EntityMP : Entity
         contr.horizontalMove = move;
         contr.jump = jump;
         contr.ForceMove();
+    }
+
+    [MessageHandler((ushort)MessageId.ServerSpellHit)]
+    private static void ServerSpellHit(Message message)
+    {
+        ushort id = message.GetUShort();
+        float value = message.GetFloat();
+        ushort len = message.GetUShort();
+        ushort[] elems = message.GetUShorts(len);
+        GlyphData.Element[] elements = new GlyphData.Element[len];
+        for (int i = 0; i < len; ++i) elements[i] = (GlyphData.Element)elems[i];
+        EntityMP.List[id].ReceiveDamage(value, elements, true);
+    }
+
+    [MessageHandler((ushort)MessageId.PlayerHeal)]
+    private static void PlayerHeal(Message message)
+    {
+        ushort id = message.GetUShort();
+        float value = message.GetFloat();
+        EntityMP.List[id].Heal(value, true);
     }
 }

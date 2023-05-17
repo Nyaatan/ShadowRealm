@@ -16,7 +16,7 @@ public class GlyphData: ScriptableObject
         AOE, SINGLE_TARGET, CHAIN, SELF
     }
 
-    public enum Element
+    public enum Element: ushort
     {
         FIRE, EARTH, WATER, AIR
     }

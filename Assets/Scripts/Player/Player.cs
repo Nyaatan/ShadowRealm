@@ -122,23 +122,31 @@ public class Player : EntityMP, TimedObject
         return target;
     }
 
-    public override void ReceiveDamage(float value, GlyphData.Element[] element)
+    public override void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal=false)
     {
-        base.ReceiveDamage(value, element);
-        invunerable = true;
-        Color color = GetComponent<SpriteRenderer>().color;
-        color.a = 0.3f;
-        GetComponent<SpriteRenderer>().color = color;
-        TTL ttl = gameObject.AddComponent<TTL>();
-        ttl.ttl = 1f;
-        ttl.parent = this;
-        ttl.start = true;
-        if(isLocal) healthBar.SetHealth(health);
+        if (!EntityMP.inSession || ((Player.List[1]) as Player).isLocal || mpSignal)
+        {
+            base.ReceiveDamage(value, element);
+            if (!mpSignal) SendReceiveDamage(value, element);
+            invunerable = true;
+            Color color = GetComponent<SpriteRenderer>().color;
+            color.a = 0.3f;
+            GetComponent<SpriteRenderer>().color = color;
+            TTL ttl = gameObject.AddComponent<TTL>();
+            ttl.ttl = 1f;
+            ttl.parent = this;
+            ttl.start = true;
+            if (isLocal) healthBar.SetHealth(health);
+        }
     }
-    public override void Heal(float value)
+    public override void Heal(float value, bool mpSignal=false)
     {
-        base.Heal(value);
-        healthBar.SetHealth(health);
+        if (!EntityMP.inSession || ((Player.List[1]) as Player).isLocal || mpSignal)
+        {
+            base.Heal(value);
+            if (!mpSignal) SendHeal(value);
+            healthBar.SetHealth(health);
+        }
     }
 
     public void OnTtlEnd()
@@ -171,6 +179,26 @@ public class Player : EntityMP, TimedObject
         message.AddVector2(glyphData.vector);
         message.AddShort(glyphData.tier);
         NetworkManager.Singleton.Client.Send(message);
+    }
+
+    public void SendReceiveDamage(float value, GlyphData.Element[] element)
+    {
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageId.ServerSpellHit);
+        message.AddUShort(id);
+        message.AddFloat(value);
+        message.AddUShort((ushort)element.Length);
+        foreach (GlyphData.Element e in element) message.AddUShort((ushort)e);
+        foreach (Player player in List.Values) if(player.id != 1)
+            NetworkManager.Singleton.Server.Send(message, player.id);
+    }
+
+    public void SendHeal(float value)
+    {
+        Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerHeal);
+        message.AddUShort(id);
+        message.AddFloat(value);
+        foreach (Player player in List.Values) if (player.id != 1)
+                NetworkManager.Singleton.Server.Send(message, player.id);
     }
 
     public void Reset()

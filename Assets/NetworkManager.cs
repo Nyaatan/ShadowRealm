@@ -10,7 +10,9 @@ internal enum MessageId : ushort
     PlayerMovement,
     PlayerAttack,
     Seed,
-    PlayerInput
+    PlayerInput,
+    ServerSpellHit,
+    PlayerHeal
 }
 
 public class NetworkManager : MonoBehaviour

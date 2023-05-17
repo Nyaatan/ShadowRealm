@@ -24597,6 +24597,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 263375872}
   localPlayerPrefab: {fileID: 943745519}
   seed: 0
+  defaultConnectionIP: 127.0.0.1
 --- !u!1 &1491531275
 GameObject:
   m_ObjectHideFlags: 0

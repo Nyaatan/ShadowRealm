@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!EntityMP.inSession || player.id == authority)
+        if (!EntityMP.inSession || (player.id == authority && (Player.List[authority] as Player).isLocal))
         {
             controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
         }
@@ -64,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void SendPosition()
     {
-        
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerMovement);
         message.AddUShort(player.id);
         message.AddVector2(player.transform.position);

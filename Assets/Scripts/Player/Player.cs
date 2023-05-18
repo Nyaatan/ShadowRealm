@@ -205,6 +205,7 @@ public class Player : EntityMP, TimedObject
     {
         health = maxHealth;
         if (!isLocal) gameObject.SetActive(false);
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
     }
 
 }

@@ -29,6 +29,10 @@ public class EntityMP : Entity
         Debug.Log(id);
         if (shouldSendSpawn)
             player.SendSpawn();
+
+        if(!(List[1] as Player).isLocal) {
+            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        }
     }
 
     public GameObject CreateTarget(Vector2 pos)

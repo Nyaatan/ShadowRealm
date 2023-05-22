@@ -62,7 +62,7 @@ public class ResearchManager : MonoBehaviour
         if(EntityMP.inSession){
             Vector3 pos = newPosition;
             pos.z = obj.transform.position.z;
-            Debug.Log("POS " + obj.transform.position + " " + pos + " | DIFF: " + Vector3.Distance(obj.transform.position, pos));
+            Debug.Log("POS " + obj.transform.position + " " + pos + " | HOR: " + obj.GetComponent<PlayerMovement>().horizontalMove + " | DIFF: " + Vector3.Distance(obj.transform.position, pos));
         }
     }
 

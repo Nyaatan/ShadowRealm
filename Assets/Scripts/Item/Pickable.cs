@@ -24,7 +24,7 @@ public class Pickable : MonoBehaviour
         }
     }
 
-    public virtual void Use(Entity user, GameObject target) { }
+    public virtual Spell Use(Entity user, GameObject target) { return null; }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {

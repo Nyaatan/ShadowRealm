@@ -136,14 +136,17 @@ public class NetworkManager : MonoBehaviour
     private void DidDisconnect(object sender, DisconnectedEventArgs e)
     {
         foreach (Player player in Player.List.Values)
-            if (!player.isLocal) player.Reset();
+            player.Reset();
         Player.List.Clear();
         GameManager.Instance.dungeon.EnterTavern();
+
+        ResearchManager.Instance.Reset();
         //UIManager.Singleton.BackToMain();
     }
 
     public void Enter()
     {
+        ResearchManager.Instance.Reset();
         multiplayer.Enter();
     }
 }

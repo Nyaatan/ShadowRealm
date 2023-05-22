@@ -55,8 +55,9 @@ public class Player : EntityMP, TimedObject
                     else animator.SetTrigger("SpellCast");
                 }
                 GameObject target = CreateTarget();
-                pickableInHand.Use(this, target);
-                if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data);
+                Spell spell = pickableInHand.Use(this, target);
+                ResearchManager.Instance.AssignSpellID(spell);
+                if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, spell.id);
                 ResetTriggers();
             }
             if (Input.GetKeyDown(KeyCode.G)) DropItem();
@@ -122,12 +123,12 @@ public class Player : EntityMP, TimedObject
         return target;
     }
 
-    public override void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal=false)
+    public override void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal=false, ushort sourceID=0)
     {
         if (!EntityMP.inSession || ((Player.List[1]) as Player).isLocal || mpSignal)
         {
-            base.ReceiveDamage(value, element);
-            if (!mpSignal) SendReceiveDamage(value, element);
+            base.ReceiveDamage(value, element, mpSignal, sourceID);
+            if (!mpSignal) SendReceiveDamage(value, element, sourceID);
             invunerable = true;
             Color color = GetComponent<SpriteRenderer>().color;
             color.a = 0.3f;
@@ -171,20 +172,23 @@ public class Player : EntityMP, TimedObject
         animator.SetBool("Death", false);
     }
 
-    public void SendAttack(Vector2 target, GlyphData glyphData)
+    public void SendAttack(Vector2 target, GlyphData glyphData, ushort spellID)
     {
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerAttack);
         message.AddUShort(id);
+        message.AddUShort(spellID);
         message.AddVector2(target);
         message.AddVector2(glyphData.vector);
         message.AddShort(glyphData.tier);
         NetworkManager.Singleton.Client.Send(message);
     }
 
-    public void SendReceiveDamage(float value, GlyphData.Element[] element)
+    public void SendReceiveDamage(float value, GlyphData.Element[] element, ushort spellID)
     {
+        Debug.Log("DUPADUPAUDPA " + spellID);
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.ServerSpellHit);
         message.AddUShort(id);
+        message.AddUShort(spellID);
         message.AddFloat(value);
         message.AddUShort((ushort)element.Length);
         foreach (GlyphData.Element e in element) message.AddUShort((ushort)e);
@@ -205,7 +209,10 @@ public class Player : EntityMP, TimedObject
     {
         health = maxHealth;
         if (!isLocal) gameObject.SetActive(false);
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            else{GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            GetComponent<PlayerMovement>().enabled = true;
+        }
+        EntityMP.inSession = false;
     }
 
 }

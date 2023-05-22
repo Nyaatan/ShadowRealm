@@ -6690,7 +6690,7 @@ GameObject:
   - component: {fileID: 263375874}
   - component: {fileID: 263375873}
   - component: {fileID: 263375872}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: EnemyMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6913,7 +6913,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 293724023}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: CeilingCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12512,6 +12512,7 @@ MonoBehaviour:
       colour: {r: 0, g: 0, b: 0, a: 0}
     - element: 0
       colour: {r: 0, g: 0, b: 0, a: 0}
+  id: 0
 --- !u!4 &1059757147
 Transform:
   m_ObjectHideFlags: 0
@@ -24646,6 +24647,7 @@ MonoBehaviour:
       colour: {r: 0, g: 0, b: 0, a: 0}
     - element: 0
       colour: {r: 0, g: 0, b: 0, a: 0}
+  id: 0
 --- !u!114 &1459169296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37979,6 +37981,7 @@ MonoBehaviour:
       colour: {r: 0, g: 0, b: 0, a: 0}
     - element: 0
       colour: {r: 0, g: 0, b: 0, a: 0}
+  id: 0
 --- !u!114 &2098012468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38155,7 +38158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2102633002}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

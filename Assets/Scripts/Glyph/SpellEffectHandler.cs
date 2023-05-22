@@ -57,7 +57,7 @@ public class SpellEffectHandler : MonoBehaviour
         if (collider != null)
         {
             Entity entity = collider.gameObject.GetComponent<Entity>();
-            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray());
+            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
         }
         proximityHandler.GetComponentInChildren<SpriteRenderer>().enabled = true;
         // Debug.Log("DUPA");
@@ -71,14 +71,14 @@ public class SpellEffectHandler : MonoBehaviour
         foreach (GameObject detection in detections)
         {
             Entity entity = detection.GetComponent<Entity>();
-            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray());
+            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
         }
     }
 
     public void HandleST(Collider2D collider)
     {
         Entity entity = collider.GetComponent<Entity>();
-        if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray());
+        if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
         MakeVisualEffect();
         Finish();
     }
@@ -88,7 +88,7 @@ public class SpellEffectHandler : MonoBehaviour
         if (collider != null)
         {
             Entity entity = collider.gameObject.GetComponent<Entity>();
-            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray());
+            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
         }
         proximityHandler.GetComponent<ProximityDetector>().Init(spell.data.width, spell.data.hitCount, HandleDetections, spell.hasEffectsOn);
     }

@@ -91,15 +91,16 @@ public class Glyph : Item
         else data.nature = GlyphData.Nature.SELF;
     }
 
-    public override void Use(Entity user, GameObject target)
+    public override Spell Use(Entity user, GameObject target)
     {
         Spell spell = Instantiate(spellPrototype);
         spell.transform.position = user.gameObject.transform.position;
         spell.caster = user;
         spell.target = target;
-        //spell.data = CalculateSpellData();
+        
         spell.Cast();
         isOnCooldown = true;
+        return spell;
     }
 
     public void Start()

@@ -12311,6 +12311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellID: 0
+  research_id: 0
 --- !u!4 &1007182695
 Transform:
   m_ObjectHideFlags: 0

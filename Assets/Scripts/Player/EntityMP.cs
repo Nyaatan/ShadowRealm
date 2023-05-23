@@ -27,7 +27,6 @@ public class EntityMP : Entity
         player.id = id;
 
         List.Add(id, player);
-        Debug.Log(id);
         if (shouldSendSpawn)
             player.SendSpawn();
 

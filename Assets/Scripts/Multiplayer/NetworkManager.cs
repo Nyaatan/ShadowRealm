@@ -118,7 +118,6 @@ public class NetworkManager : MonoBehaviour
 
     private void PlayerJoined(object sender, ServerConnectedEventArgs e)
     {
-        Debug.Log(Server.Clients);
         Player.SendSeed(seed, e.Client.Id);
         foreach (EntityMP player in Player.List.Values)
             if (player.id != e.Client.Id)
@@ -136,14 +135,17 @@ public class NetworkManager : MonoBehaviour
     private void DidDisconnect(object sender, DisconnectedEventArgs e)
     {
         foreach (Player player in Player.List.Values)
-            if (!player.isLocal) player.Reset();
+            player.Reset();
         Player.List.Clear();
         GameManager.Instance.dungeon.EnterTavern();
+
+        ResearchManager.Instance.Reset();
         //UIManager.Singleton.BackToMain();
     }
 
     public void Enter()
     {
+        ResearchManager.Instance.Reset();
         multiplayer.Enter();
     }
 }

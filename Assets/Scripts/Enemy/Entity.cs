@@ -31,7 +31,7 @@ public class Entity : MonoBehaviour
         
     }
 
-    public virtual void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal = false)
+    public virtual void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal = false, ushort sourceID=0)
     {
         if (floatColor.Equals(new Color(0, 0, 0, 0))) floatColor = Color.yellow;
         floatDamage = Instantiate(GameManager.Instance.floatDamage, transform.position + new Vector3(0, 3, 0), Quaternion.identity);
@@ -48,6 +48,7 @@ public class Entity : MonoBehaviour
         floatDamage.GetComponent<TextMesh>().color = floatColor;
         onReceiveDamage();
     }
+
 
     public virtual void Heal(float value, bool mpSignal=false)
     {

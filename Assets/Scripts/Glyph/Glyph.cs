@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Glyph : Item
 {
@@ -91,15 +92,16 @@ public class Glyph : Item
         else data.nature = GlyphData.Nature.SELF;
     }
 
-    public override void Use(Entity user, GameObject target)
+    public override Spell Use(Entity user, GameObject target)
     {
         Spell spell = Instantiate(spellPrototype);
         spell.transform.position = user.gameObject.transform.position;
         spell.caster = user;
         spell.target = target;
-        //spell.data = CalculateSpellData();
+        
         spell.Cast();
         isOnCooldown = true;
+        return spell;
     }
 
     public void Start()
@@ -108,7 +110,7 @@ public class Glyph : Item
         prefabInstance.transform.position = transform.position;
         prefabInstance.transform.parent = this.transform;
         data = Instantiate(data);
-
+        data.element = data.element.Take(data.tier).ToList();
         if (!data.empty) spellPrototype.data = CalculateSpellData();
         else spellPrototype.gameObject.SetActive(false);
 
@@ -132,7 +134,6 @@ public class Glyph : Item
         }
 
         data = SpellData.Combine(defaults, this.data.tier);
-
         return data;
     }
 

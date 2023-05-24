@@ -13,6 +13,7 @@ public class EntityMP : Entity
     {
         List.Remove(id);
     }
+
     public static void Spawn(ushort id, Vector2 pos, bool shouldSendSpawn=false)
     {
         EntityMP player;
@@ -26,13 +27,13 @@ public class EntityMP : Entity
         player.id = id;
 
         List.Add(id, player);
-        Debug.Log(id);
         if (shouldSendSpawn)
             player.SendSpawn();
 
-        if(!(List[1] as Player).isLocal) {
-            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        }
+        if(List.TryGetValue(1, out EntityMP host)){
+            if(!(host as Player).isLocal)
+                player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        } else player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
     public GameObject CreateTarget(Vector2 pos)
@@ -43,14 +44,16 @@ public class EntityMP : Entity
         return target;
     }
 
-    private void Attack(Vector2 target, Vector2 glyphVector, short tier)
+    private void Attack(Vector2 target, Vector2 glyphVector, short tier, ushort spellID)
     {
         Glyph glyph = Glyph.GetFromValues(glyphVector, tier).GetComponent<Glyph>();
 
         if (glyph.data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
         else animator.SetTrigger("SpellCast");
         Debug.Log(glyph.data.vector);
-        glyph.Use(this, CreateTarget(target));
+        Spell spell = glyph.Use(this, CreateTarget(target));
+        spell.id = spellID;
+        ResearchManager.Instance.AddSpell(spell);
         //Destroy(glyph.gameObject);
     }
 
@@ -90,8 +93,11 @@ public class EntityMP : Entity
     private static void PlayerMovement(Message message)
     {
         ushort playerId = message.GetUShort();
-        if (List.TryGetValue(playerId, out EntityMP player))
-            player.Move(message.GetVector2());
+        if (List.TryGetValue(playerId, out EntityMP player)){
+            Vector2 pos = message.GetVector2();
+            ResearchManager.Instance.HandlePositionChange(player.gameObject, new Vector2(pos.x, pos.y));
+            player.Move(pos);
+        }
         //Debug.Log("MoveReceive");
         //Debug.Log(playerId);
     }
@@ -100,13 +106,14 @@ public class EntityMP : Entity
     private static void PlayerAttack(Message message)
     {
         ushort playerId = message.GetUShort();
+        ushort spellID = message.GetUShort();
         Vector2 targetTransform = message.GetVector2();
         Vector2 glyphVector = message.GetVector2();
         short tier = message.GetShort();
         Debug.Log(glyphVector);
         Debug.Log(tier);
         if (List.TryGetValue(playerId, out EntityMP player))
-            player.Attack(targetTransform, glyphVector, tier);
+            player.Attack(targetTransform, glyphVector, tier, spellID);
 
     }
 
@@ -124,7 +131,6 @@ public class EntityMP : Entity
         Player player = Player.List[fromClientId] as Player;
         float move = message.GetFloat();
         bool jump = message.GetBool();
-        Debug.Log(player.isLocal);
         PlayerMovement contr = player.gameObject.GetComponent<PlayerMovement>();
         contr.horizontalMove = move;
         contr.jump = jump;
@@ -135,12 +141,14 @@ public class EntityMP : Entity
     private static void ServerSpellHit(Message message)
     {
         ushort id = message.GetUShort();
+        ushort spellID = message.GetUShort();
         float value = message.GetFloat();
         ushort len = message.GetUShort();
         ushort[] elems = message.GetUShorts(len);
         GlyphData.Element[] elements = new GlyphData.Element[len];
         for (int i = 0; i < len; ++i) elements[i] = (GlyphData.Element)elems[i];
         EntityMP.List[id].ReceiveDamage(value, elements, true);
+        ResearchManager.Instance.RegisterHit(spellID, id);
     }
 
     [MessageHandler((ushort)MessageId.PlayerHeal)]

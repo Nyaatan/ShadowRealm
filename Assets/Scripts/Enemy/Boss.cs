@@ -129,7 +129,7 @@ public class Boss : Entity
         }
     }
 
-    public override void ReceiveDamage(float value, GlyphData.Element[] elements, bool mpSignal=false)
+    public override void ReceiveDamage(float value, GlyphData.Element[] elements, bool mpSignal=false, ushort sourceID = 0)
     {
         floatColor = Color.yellow;
         foreach (GlyphData.Element element in elements)
@@ -143,7 +143,7 @@ public class Boss : Entity
                 value *= 2f;
                 floatColor = Color.red;
             }
-        base.ReceiveDamage(value, elements);
+        base.ReceiveDamage(value, elements, false);
     }
 
     public override void onReceiveDamage()

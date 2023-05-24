@@ -21,6 +21,8 @@ public class Spell : MonoBehaviour, TimedObject
     [SerializeField]
     public SpellData data;
 
+    public ushort id;
+
     public void Cast()
     {
         Vector3 startPos = caster.transform.position;
@@ -69,6 +71,7 @@ public class Spell : MonoBehaviour, TimedObject
                     if (collision.gameObject.layer == (int)Mathf.Log(layerMask, 2) && collision.gameObject.layer != caster.gameObject.layer)
                     {
                         isCasted = false;
+                        ResearchManager.Instance.HandleSpellCollision(this, collision.gameObject);
                         TriggerEffect(collision);
                     }
                 }
@@ -110,6 +113,10 @@ public class Spell : MonoBehaviour, TimedObject
         isCasted = false;
         TriggerEffect(null);
         Destroy(target);
+    }
+
+    public void OnDestroy(){
+        ResearchManager.Instance.HandleDestroySpell(this);
     }
 }
 

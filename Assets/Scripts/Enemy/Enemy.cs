@@ -107,7 +107,7 @@ public class Enemy : Entity
         jump = false;
     }
 
-    public override void ReceiveDamage(float value, GlyphData.Element[] elements, bool mpSignal=false)
+    public override void ReceiveDamage(float value, GlyphData.Element[] elements, bool mpSignal=false, ushort sourceID = 0)
     {
         floatColor = Color.yellow;
         foreach (GlyphData.Element element in elements)
@@ -121,7 +121,7 @@ public class Enemy : Entity
                 value *= 2f;
                 floatColor = Color.red;
             }
-        base.ReceiveDamage(value, elements);
+        base.ReceiveDamage(value, elements, mpSignal);
     }
 
     void CheckTargetInSight()

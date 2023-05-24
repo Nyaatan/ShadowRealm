@@ -12,6 +12,7 @@ public class ProximityDetector : MonoBehaviour
     float step = 0f;
     int maxCount = -1;
     private List<LayerMask> layers;
+    public ParticleSystem particles;
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +28,16 @@ public class ProximityDetector : MonoBehaviour
             step += 0.05f;
             transform.localScale = Vector3.Lerp(initScale, initScale * range, step);
             Debug.Log(range);
+            var shape = particles.shape;
+            shape.radius = transform.localScale.x*0.09f;
             if (step >= 1 || (detections.Count >= maxCount && maxCount != -1))
             {
                 step = 0f;
                 start = false;
                 callback(detections);
+                var emission = particles.emission;
+                emission.rateOverTime = 0;
+                shape.radius = 0.1f;
             }
         }
     }
@@ -46,6 +52,8 @@ public class ProximityDetector : MonoBehaviour
         collider2D.enabled = true;
         //collider2D.radius = 1;
         start = true;
+        var emission = particles.emission;
+        emission.rateOverTime = 12000;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

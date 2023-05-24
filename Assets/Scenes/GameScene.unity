@@ -5731,6 +5731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ec4c27889d23d49912b3e9a92030a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particles: {fileID: 1319649667}
 --- !u!58 &118870438
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -12098,7 +12099,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963308758}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.753082, y: 27.620512, z: 12.9120865}
+  m_LocalPosition: {x: 9.91, y: 17.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2098012469}
@@ -12863,6 +12864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ec4c27889d23d49912b3e9a92030a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particles: {fileID: 17112025}
 --- !u!58 &1161358430
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -19176,7 +19178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319649664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2098012469}
@@ -36678,6 +36680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ec4c27889d23d49912b3e9a92030a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particles: {fileID: 1798792613}
 --- !u!58 &1950960055
 CircleCollider2D:
   m_ObjectHideFlags: 0

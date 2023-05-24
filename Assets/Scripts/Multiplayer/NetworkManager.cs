@@ -118,7 +118,6 @@ public class NetworkManager : MonoBehaviour
 
     private void PlayerJoined(object sender, ServerConnectedEventArgs e)
     {
-        Debug.Log(Server.Clients);
         Player.SendSeed(seed, e.Client.Id);
         foreach (EntityMP player in Player.List.Values)
             if (player.id != e.Client.Id)

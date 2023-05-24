@@ -40,13 +40,35 @@ public class ResearchManager : MonoBehaviour
         if(EntityMP.inSession) spells.Add(spell.id, spell);
     }
 
-    public void RegisterHit(ushort spellID){
+    private float GetSpellDistance(Spell spell, ushort playerID){
+        return EntityMP.List[playerID].gameObject.GetComponent<Collider2D>().Distance(spell.gameObject.GetComponent<Collider2D>()).distance;
+    }
+    private float GetSpellDistance(DestroyedSpell spell, ushort playerID){
+
+        return Mathf.Max(Vector3.Distance(EntityMP.List[playerID].gameObject.GetComponent<Collider2D>().ClosestPoint(spell.position), spell.position) - spell.width, 0);
+    }
+    public void RegisterHit(ushort spellID, ushort playerID){
         if(EntityMP.inSession){
             if(spells.TryGetValue(spellID, out Spell spell)){
-                Log("HIT;" + spellID + ";" + spell.gameObject.transform.position + ";" + spell.data.range);
+                Log(string.Join(";", new List<string> {
+                    "HIT", spellID.ToString(),
+                     spell.gameObject.transform.position.ToString(), 
+                     spell.data.nature.ToString(),
+                     spell.data.width.ToString(), 
+                     playerID.ToString(), 
+                     GetSpellDistance(spell, playerID).ToString()
+                     }));
             }
             else if(destroyedSpells.TryGetValue(spellID, out DestroyedSpell dspell)){
-                Log("DHT;" + spellID + ";" + dspell.position + ";" + dspell.range);
+                Log(string.Join(";",  new List<string> {
+                    "DHT", 
+                    spellID.ToString(), 
+                    dspell.position.ToString(), 
+                    dspell.nature.ToString(),
+                    dspell.width.ToString(), 
+                    playerID.ToString(), 
+                    GetSpellDistance(dspell, playerID).ToString()
+                    }));
             }
         }
     }
@@ -56,7 +78,8 @@ public class ResearchManager : MonoBehaviour
             DestroyedSpell dspell = new DestroyedSpell();
             dspell.id = spell.id;
             dspell.position = spell.gameObject.transform.position;
-            dspell.range = spell.data.range;
+            dspell.width = spell.data.width;
+            dspell.nature = spell.data.nature;
             spells.Remove(spell.id);
             destroyedSpells.Add(dspell.id, dspell);
         }
@@ -66,13 +89,26 @@ public class ResearchManager : MonoBehaviour
         if(EntityMP.inSession){
             Vector3 pos = newPosition;
             pos.z = obj.transform.position.z;
-            Log("POS;" + obj.transform.position + ";" + pos + ";" + obj.GetComponent<PlayerMovement>().horizontalMove + ";" + Vector3.Distance(obj.transform.position, pos));
+            //Log("POS;" + obj.transform.position + ";" + pos + ";" + obj.GetComponent<PlayerMovement>().horizontalMove + ";" + Vector3.Distance(obj.transform.position, pos));
+            Log(string.Join(";",  new List<string> {
+                    "POS", 
+                    obj.transform.position.ToString(), 
+                    pos.ToString(), 
+                    obj.GetComponent<PlayerMovement>().horizontalMove.ToString(), 
+                    Vector3.Distance(obj.transform.position, pos).ToString()
+                    }));
         }
     }
 
     public void HandleSpellCollision(Spell spell, GameObject obj){
         if(EntityMP.inSession){
-            Log("COL;" + spell.id + ";" + obj.transform.position + ";" + spell.data.range);
+            //Log("COL;" + spell.id + ";" + obj.transform.position + ";" + spell.data.range);
+            Log(string.Join(";",  new List<string> {
+                    "COL", 
+                    spell.id.ToString(), 
+                    obj.transform.position.ToString(), 
+                    spell.data.range.ToString(), 
+                    }));
         }
     }
 
@@ -80,20 +116,25 @@ public class ResearchManager : MonoBehaviour
         log.Add(data);
     }
 
-    private IEnumerator WriteLog(){
-        Debug.Log("DUPADUPADUPAUDPAUDPAUDPAUDPUPAD" + log.Count);
+    public void WriteToFile(){
         string path = @"research" + research_id + ".log";
+        Debug.Log("LOGGING " + log.Count + " LINES");
         if (File.Exists(path)) using (StreamWriter sw = File.AppendText(path))
-        {
-            foreach(string line in log) sw.WriteLine(line);
-        }
-        else using (StreamWriter sw = File.CreateText(path))
-        {
-            foreach(string line in log) sw.WriteLine(line);
-        }
-        yield return new WaitForSeconds(1);
+            {
+                foreach(string line in log) sw.WriteLine(line);
+            }
+            else using (StreamWriter sw = File.CreateText(path))
+            {
+                foreach(string line in log) sw.WriteLine(line);
+            }
         log.Clear();
-        StartCoroutine(WriteLog());
+    }
+
+    private IEnumerator WriteLog(){
+        while(true){
+            ResearchManager.Instance.WriteToFile();
+            yield return new WaitForSeconds(1);
+        }
     }
 
     public void Reset(){
@@ -106,6 +147,7 @@ public class ResearchManager : MonoBehaviour
     public class DestroyedSpell{
         public ushort id;
         public Vector3 position;
-        public float range;
+        public float width;
+        public GlyphData.Nature nature;
     }
 }

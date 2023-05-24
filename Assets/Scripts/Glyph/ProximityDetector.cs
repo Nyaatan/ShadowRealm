@@ -20,13 +20,13 @@ public class ProximityDetector : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (start)
         {
             step += 0.05f;
             transform.localScale = Vector3.Lerp(initScale, initScale * range, step);
-
+            Debug.Log(range);
             if (step >= 1 || (detections.Count >= maxCount && maxCount != -1))
             {
                 step = 0f;
@@ -44,7 +44,7 @@ public class ProximityDetector : MonoBehaviour
         this.layers = layers;
         CircleCollider2D collider2D = GetComponent<CircleCollider2D>();
         collider2D.enabled = true;
-        collider2D.radius = 1;
+        //collider2D.radius = 1;
         start = true;
     }
 

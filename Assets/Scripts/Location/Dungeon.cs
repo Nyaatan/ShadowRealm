@@ -23,6 +23,12 @@ public class Dungeon : MonoBehaviour, Location
     bool ChallengeActivated = false;
     ChallengeRoomActivator ChallengeRoomActivator;
 
+    public static Dungeon Instance;
+
+    public void Awake(){
+        Instance = this;
+    }
+
     internal void ActivateChallenge(ChallengeRoomActivator activator)
     {
         foreach (GameObject obj in roomObjectsOnScreen) if(obj != null) if (obj.GetComponentInChildren<Waypoint>() != null)

@@ -148,7 +148,7 @@ public class EntityMP : Entity
         GlyphData.Element[] elements = new GlyphData.Element[len];
         for (int i = 0; i < len; ++i) elements[i] = (GlyphData.Element)elems[i];
         EntityMP.List[id].ReceiveDamage(value, elements, true);
-        ResearchManager.Instance.RegisterHit(spellID);
+        ResearchManager.Instance.RegisterHit(spellID, id);
     }
 
     [MessageHandler((ushort)MessageId.PlayerHeal)]

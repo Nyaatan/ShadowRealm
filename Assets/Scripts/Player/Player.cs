@@ -185,7 +185,7 @@ public class Player : EntityMP, TimedObject
 
     public void SendReceiveDamage(float value, GlyphData.Element[] element, ushort spellID)
     {
-        Debug.Log("DUPADUPAUDPA " + spellID);
+        //Debug.Log("DUPADUPAUDPA " + spellID);
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.ServerSpellHit);
         message.AddUShort(id);
         message.AddUShort(spellID);

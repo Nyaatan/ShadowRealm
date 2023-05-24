@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344d14ea1380e3e4783f32a4af4bfc3d, type: 3}
   m_Name: GlyphData
   m_EditorClassIdentifier: 
-  element: 00000000
+  element: 0000000000000000
   nature: 1
   tier: 1
   vector: {x: 0.3, y: -0.7}

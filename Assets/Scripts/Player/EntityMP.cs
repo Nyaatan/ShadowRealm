@@ -105,6 +105,7 @@ public class EntityMP : Entity
     [MessageHandler((ushort)MessageId.PlayerAttack)]
     private static void PlayerAttack(Message message)
     {
+        Debug.Log("ADADADADA");
         ushort playerId = message.GetUShort();
         ushort spellID = message.GetUShort();
         Vector2 targetTransform = message.GetVector2();
@@ -115,6 +116,16 @@ public class EntityMP : Entity
         if (List.TryGetValue(playerId, out EntityMP player))
             player.Attack(targetTransform, glyphVector, tier, spellID);
 
+    }
+
+    [MessageHandler((ushort)MessageId.PlayerAttack)]
+    private static void PlayerAttack(ushort fromClientId, Message message){
+        if(!(List[1] as Player).isLocal || fromClientId != 1) PlayerAttack(message);
+
+        foreach (Player player in List.Values) if(player.id != 1){
+            Debug.Log("DUPSKO " + player.id);
+            NetworkManager.Singleton.Server.Send(message, player.id);
+        }
     }
 
     [MessageHandler((ushort)MessageId.Seed)]

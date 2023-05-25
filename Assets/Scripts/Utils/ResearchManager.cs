@@ -28,12 +28,20 @@ public class ResearchManager : MonoBehaviour
         StartCoroutine(WriteLog());
     }
 
-    public void AssignSpellID(Spell spell){
+    public void AssignSpellID(Spell spell, ushort ID=65535){
         if(EntityMP.inSession){
-            ushort ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 8) + spellID++);
+            if(ID == 65535) ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 12) + spellID++);
             spell.id = ID;
             AddSpell(spell);
         }
+    }
+
+    public ushort CreateSpellID(){
+        if(EntityMP.inSession){
+            ushort ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 12) + spellID++);
+            return ID;
+        }
+        else return 65535;
     }
 
     public void AddSpell(Spell spell){

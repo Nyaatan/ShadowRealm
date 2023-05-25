@@ -18,6 +18,8 @@ public class Player : EntityMP, TimedObject
     public InventoryUI inventoryUI;
     public bool isLocal = false;
     
+    
+    #region Utils
     // Start is called before the first frame update
     public override void Start()
     {
@@ -33,113 +35,6 @@ public class Player : EntityMP, TimedObject
         yield return null;
     }
 
-    public void DropItem()
-    {
-        if (pickableInHand is Glyph) (pickableInHand as Glyph).spellPrototype.effectHandler.particles.Pause();
-        pickableInHand.gameObject.transform.position = transform.position + new Vector3(transform.localScale.x / Mathf.Abs(transform.localScale.x) * GameManager.Instance.dungeon.scale, 0, 0);
-        pickableInHand.gameObject.GetComponent<Collider2D>().enabled = true;
-        pickableInHand.gameObject.GetComponent<Rigidbody2D>().simulated = true;
-        inventory.Remove(pickableInHand);
-        UpdateInventoryUI();
-
-        if (pickableInHand is Glyph) (pickableInHand as Glyph).spellPrototype.effectHandler.particles.Play();
-    }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-        if (pickableInHand != null && GetComponent<PlayerMovement>().enabled) {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !pickableInHand.isOnCooldown) { 
-                if (pickableInHand is Glyph) {
-                    if (((Glyph)pickableInHand).data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
-                    else animator.SetTrigger("SpellCast");
-                }
-                GameObject target = CreateTarget();
-                Spell spell = pickableInHand.Use(this, target);
-                ResearchManager.Instance.AssignSpellID(spell);
-                if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, spell.id);
-                ResetTriggers();
-            }
-            if (Input.GetKeyDown(KeyCode.G)) DropItem();
-        }
-
-
-        if (scrollLock <= 0f)
-        {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
-            {
-                scrollLock = scrollLockDefault;
-                selected += 1;
-            }
-            else if(Input.GetAxis("Mouse ScrollWheel") < 0f)
-            {
-                scrollLock = scrollLockDefault;
-                selected -= 1;
-            }
-            if (selected < 0) selected = inventory.size - 1;
-            if (selected >= inventory.size) selected = 0;
-            inventoryUI.SelectSlot(selected);
-            pickableInHand = inventory.Get(selected);
-        }
-
-        if (scrollLock > 0f) scrollLock -= Time.deltaTime;
-        //Debug.Log(selected);
-        //Debug.Log(pickableInHand);
-        //Debug.Log(inventory.pickables.Count);
-    }
-
-    public void Pick(Pickable obj)
-    {
-        if(inventory.Add(obj))
-        {
-            obj.gameObject.transform.position = new Vector3(-1000, -1000, transform.position.z);
-            obj.gameObject.GetComponent<Rigidbody2D>().simulated = false;
-            
-        }
-        //foreach(Pickable key in inventory.inventory.Keys) Debug.Log(inventory.inventory[key]);
-        UpdateInventoryUI();
-    }
-
-    public void UpdateInventoryUI()
-    {
-        int i = 0;
-        foreach(Pickable pickable in inventory.pickables)
-        {
-            inventoryUI.SetSpriteInSlot(((Item)pickable).prefab.GetComponent<SpriteRenderer>().sprite, i);
-            ++i;
-        }
-        for (int j=i; j < inventory.size; ++j) inventoryUI.SetSpriteInSlot(null, j);
-    }
-
-    public GameObject CreateTarget()
-    {
-        GameObject target = new GameObject("Target");
-        target.AddComponent<TTL>();
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Camera.main.nearClipPlane;
-        Vector2 pos = Camera.main.ScreenToWorldPoint(mousePos);
-        target.transform.position = pos;
-        target.transform.position += new Vector3(0, 0, transform.position.z);
-        return target;
-    }
-
-    public override void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal=false, ushort sourceID=0)
-    {
-        if (!EntityMP.inSession || ((Player.List[1]) as Player).isLocal || mpSignal)
-        {
-            base.ReceiveDamage(value, element, mpSignal, sourceID);
-            if (!mpSignal) SendReceiveDamage(value, element, sourceID);
-            invunerable = true;
-            Color color = GetComponent<SpriteRenderer>().color;
-            color.a = 0.3f;
-            GetComponent<SpriteRenderer>().color = color;
-            TTL ttl = gameObject.AddComponent<TTL>();
-            ttl.ttl = 1f;
-            ttl.parent = this;
-            ttl.start = true;
-            if (isLocal) healthBar.SetHealth(health);
-        }
-    }
     public override void Heal(float value, bool mpSignal=false)
     {
         if (!EntityMP.inSession || ((Player.List[1]) as Player).isLocal || mpSignal)
@@ -172,6 +67,124 @@ public class Player : EntityMP, TimedObject
         animator.SetBool("Death", false);
     }
 
+    public void UpdateInventoryUI()
+    {
+        int i = 0;
+        foreach(Pickable pickable in inventory.pickables)
+        {
+            inventoryUI.SetSpriteInSlot(((Item)pickable).prefab.GetComponent<SpriteRenderer>().sprite, i);
+            ++i;
+        }
+        for (int j=i; j < inventory.size; ++j) inventoryUI.SetSpriteInSlot(null, j);
+    }
+    #endregion
+    
+    #region Items
+    public void DropItem()
+    {
+        if (pickableInHand is Glyph) (pickableInHand as Glyph).spellPrototype.effectHandler.particles.Pause();
+        pickableInHand.gameObject.transform.position = transform.position + new Vector3(transform.localScale.x / Mathf.Abs(transform.localScale.x) * GameManager.Instance.dungeon.scale, 0, 0);
+        pickableInHand.gameObject.GetComponent<Collider2D>().enabled = true;
+        pickableInHand.gameObject.GetComponent<Rigidbody2D>().simulated = true;
+        inventory.Remove(pickableInHand);
+        UpdateInventoryUI();
+
+        if (pickableInHand is Glyph) (pickableInHand as Glyph).spellPrototype.effectHandler.particles.Play();
+    }
+
+    public void Pick(Pickable obj)
+    {
+        if(inventory.Add(obj))
+        {
+            obj.gameObject.transform.position = new Vector3(-1000, -1000, transform.position.z);
+            obj.gameObject.GetComponent<Rigidbody2D>().simulated = false;
+            
+        }
+        //foreach(Pickable key in inventory.inventory.Keys) Debug.Log(inventory.inventory[key]);
+        UpdateInventoryUI();
+    }
+    #endregion
+
+    // Update is called once per frame
+    public override void Update()
+    {
+        if (pickableInHand != null && GetComponent<PlayerMovement>().enabled) {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !pickableInHand.isOnCooldown) { 
+                if (pickableInHand is Glyph) {
+                    if (((Glyph)pickableInHand).data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
+                    else animator.SetTrigger("SpellCast");
+                }
+                GameObject target = CreateTarget();
+                if(!inSession || (List[1] as Player).isLocal){
+                    Spell spell = pickableInHand.Use(this, target);
+                    ResearchManager.Instance.AssignSpellID(spell);
+                    if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, spell.id);
+                }
+                else if(inSession && !(List[1] as Player).isLocal) {
+                    pickableInHand.isOnCooldown = true;
+                    SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, ResearchManager.Instance.CreateSpellID());
+                }
+                ResetTriggers();
+            }
+            if (Input.GetKeyDown(KeyCode.G)) DropItem();
+        }
+
+
+        if (scrollLock <= 0f)
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            {
+                scrollLock = scrollLockDefault;
+                selected += 1;
+            }
+            else if(Input.GetAxis("Mouse ScrollWheel") < 0f)
+            {
+                scrollLock = scrollLockDefault;
+                selected -= 1;
+            }
+            if (selected < 0) selected = inventory.size - 1;
+            if (selected >= inventory.size) selected = 0;
+            inventoryUI.SelectSlot(selected);
+            pickableInHand = inventory.Get(selected);
+        }
+
+        if (scrollLock > 0f) scrollLock -= Time.deltaTime;
+        //Debug.Log(selected);
+        //Debug.Log(pickableInHand);
+        //Debug.Log(inventory.pickables.Count);
+    }
+
+    public GameObject CreateTarget()
+    {
+        GameObject target = new GameObject("Target");
+        target.AddComponent<TTL>();
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = Camera.main.nearClipPlane;
+        Vector2 pos = Camera.main.ScreenToWorldPoint(mousePos);
+        target.transform.position = pos;
+        target.transform.position += new Vector3(0, 0, transform.position.z);
+        return target;
+    }
+
+    #region Messages
+    public override void ReceiveDamage(float value, GlyphData.Element[] element, bool mpSignal=false, ushort sourceID=0)
+    {
+        if (!EntityMP.inSession || ((Player.List[1]) as Player).isLocal || mpSignal)
+        {
+            base.ReceiveDamage(value, element, mpSignal, sourceID);
+            if (!mpSignal) SendReceiveDamage(value, element, sourceID);
+            invunerable = true;
+            Color color = GetComponent<SpriteRenderer>().color;
+            color.a = 0.3f;
+            GetComponent<SpriteRenderer>().color = color;
+            TTL ttl = gameObject.AddComponent<TTL>();
+            ttl.ttl = 1f;
+            ttl.parent = this;
+            ttl.start = true;
+            if (isLocal) healthBar.SetHealth(health);
+        }
+    }
+
     public void SendAttack(Vector2 target, GlyphData glyphData, ushort spellID)
     {
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerAttack);
@@ -185,7 +198,7 @@ public class Player : EntityMP, TimedObject
 
     public void SendReceiveDamage(float value, GlyphData.Element[] element, ushort spellID)
     {
-        //Debug.Log("DUPADUPAUDPA " + spellID);
+        
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.ServerSpellHit);
         message.AddUShort(id);
         message.AddUShort(spellID);
@@ -214,5 +227,7 @@ public class Player : EntityMP, TimedObject
         }
         EntityMP.inSession = false;
     }
+
+    #endregion
 
 }

@@ -59,7 +59,7 @@ public class SpellEffectHandler : MonoBehaviour
             Entity entity = collider.gameObject.GetComponent<Entity>();
             if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
         }
-        proximityHandler.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        //proximityHandler.GetComponentInChildren<SpriteRenderer>().enabled = true;
         // Debug.Log("DUPA");
         proximityHandler.GetComponent<ProximityDetector>().Init(spell.data.width, -1, HandleDetections, spell.hasEffectsOn);
     }

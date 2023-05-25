@@ -62,7 +62,7 @@ public class NetworkManager : MonoBehaviour
         Server = new Server();
         Server.ClientConnected += PlayerJoined;
         Server.RelayFilter = new MessageRelayFilter(typeof(MessageId), 
-            MessageId.SpawnPlayer, MessageId.PlayerMovement, MessageId.PlayerAttack, MessageId.Seed);
+            MessageId.SpawnPlayer, MessageId.PlayerMovement, MessageId.Seed);
 
         Client = new Client();
         Client.Connected += DidConnect;

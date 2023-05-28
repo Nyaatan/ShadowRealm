@@ -11,6 +11,7 @@ public class ResearchManager : MonoBehaviour
     public Dictionary<ushort, DestroyedSpell> destroyedSpells = new Dictionary<ushort, DestroyedSpell>(); 
     private List<string> log = new List<string>();
     public ushort research_id = 0;
+    public bool invunerability = false;
 
     void Start()
     {
@@ -19,7 +20,12 @@ public class ResearchManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(EntityMP.inSession) {
+            foreach(Player player in EntityMP.List.Values) 
+            {   
+                player.invunerable = invunerability;
+            }
+        }
     }
 
     void Awake()
@@ -28,12 +34,20 @@ public class ResearchManager : MonoBehaviour
         StartCoroutine(WriteLog());
     }
 
-    public void AssignSpellID(Spell spell){
+    public void AssignSpellID(Spell spell, ushort ID=65535){
         if(EntityMP.inSession){
-            ushort ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 8) + spellID++);
+            if(ID == 65535) ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 12) + spellID++);
             spell.id = ID;
             AddSpell(spell);
         }
+    }
+
+    public ushort CreateSpellID(){
+        if(EntityMP.inSession){
+            ushort ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 12) + spellID++);
+            return ID;
+        }
+        else return 65535;
     }
 
     public void AddSpell(Spell spell){

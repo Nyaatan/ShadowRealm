@@ -16,6 +16,7 @@ public class TTL : MonoBehaviour
             {
                 if (parent != null) parent.OnTtlEnd();
                 else Destroy(gameObject);
+                Destroy(this);
             }
         }
     }

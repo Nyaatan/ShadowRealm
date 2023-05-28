@@ -11,6 +11,7 @@ public class ResearchManager : MonoBehaviour
     public Dictionary<ushort, DestroyedSpell> destroyedSpells = new Dictionary<ushort, DestroyedSpell>(); 
     private List<string> log = new List<string>();
     public ushort research_id = 0;
+    public bool invunerability = false;
 
     void Start()
     {
@@ -19,7 +20,12 @@ public class ResearchManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(EntityMP.inSession) {
+            foreach(Player player in EntityMP.List.Values) 
+            {   
+                player.invunerable = invunerability;
+            }
+        }
     }
 
     void Awake()

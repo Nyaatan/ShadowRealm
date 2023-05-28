@@ -40,6 +40,7 @@ public class Entity : MonoBehaviour
         ttl.start = true;
         if (!invunerable)
         {
+            Debug.Log("UDPA " + invunerable);
             health = Mathf.Max(0, health - value);
             Debug.Log(this.gameObject + " received " + value + " damage");
             if (health == 0) OnDeath();

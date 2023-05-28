@@ -65,6 +65,7 @@ public class ResearchManager : MonoBehaviour
         if(EntityMP.inSession){
             if(spells.TryGetValue(spellID, out Spell spell)){
                 Log(string.Join(";", new List<string> {
+                    GetTimestamp().ToString(),
                     "HIT", spellID.ToString(),
                      spell.gameObject.transform.position.ToString(), 
                      spell.data.nature.ToString(),
@@ -75,6 +76,7 @@ public class ResearchManager : MonoBehaviour
             }
             else if(destroyedSpells.TryGetValue(spellID, out DestroyedSpell dspell)){
                 Log(string.Join(";",  new List<string> {
+                    GetTimestamp().ToString(),
                     "DHT", 
                     spellID.ToString(), 
                     dspell.position.ToString(), 
@@ -99,18 +101,19 @@ public class ResearchManager : MonoBehaviour
         }
     }
 
-    public void HandlePositionChange(GameObject obj, Vector2 newPosition){
+    public void HandlePositionChange(GameObject obj, Vector2 lagDistance){
         if(EntityMP.inSession){
-            Vector3 pos = newPosition;
+            Vector3 pos = lagDistance;
             pos.z = obj.transform.position.z;
             //Log("POS;" + obj.transform.position + ";" + pos + ";" + obj.GetComponent<PlayerMovement>().horizontalMove + ";" + Vector3.Distance(obj.transform.position, pos));
-            Log(string.Join(";",  new List<string> {
-                    "POS", 
-                    obj.transform.position.ToString(), 
-                    pos.ToString(), 
-                    obj.GetComponent<PlayerMovement>().horizontalMove.ToString(), 
+            Log(string.Join(";", new List<string> {
+                    GetTimestamp().ToString(),
+                    "POS",
+                    obj.transform.position.ToString(),
+                    pos.ToString(),
+                    obj.GetComponent<PlayerMovement>().horizontalMove.ToString(),
                     Vector3.Distance(obj.transform.position, pos).ToString()
-                    }));
+                    })); ;
         }
     }
 
@@ -118,6 +121,7 @@ public class ResearchManager : MonoBehaviour
         if(EntityMP.inSession){
             //Log("COL;" + spell.id + ";" + obj.transform.position + ";" + spell.data.range);
             Log(string.Join(";",  new List<string> {
+                    GetTimestamp().ToString(),
                     "COL", 
                     spell.id.ToString(), 
                     obj.transform.position.ToString(), 
@@ -130,11 +134,17 @@ public class ResearchManager : MonoBehaviour
         log.Add(data);
     }
 
+     public static long GetTimestamp()
+    {
+        return (System.DateTime.UtcNow.Ticks / System.TimeSpan.TicksPerMillisecond);
+    }
+
     public void WriteToFile(){
         string path = @"research" + research_id + ".log";
-        Debug.Log("LOGGING " + log.Count + " LINES");
+        //Debug.Log("LOGGING " + log.Count + " LINES");
         if (File.Exists(path)) using (StreamWriter sw = File.AppendText(path))
             {
+                //Debug.Log(GetTimestamp());
                 foreach(string line in log) sw.WriteLine(line);
             }
             else using (StreamWriter sw = File.CreateText(path))

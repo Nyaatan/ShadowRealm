@@ -2,6 +2,7 @@ using Riptide;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Player : EntityMP, TimedObject
 
@@ -16,9 +17,8 @@ public class Player : EntityMP, TimedObject
 
     public HealthBar healthBar;
     public InventoryUI inventoryUI;
-    public bool isLocal = false;
-    
-    
+
+
     #region Utils
     // Start is called before the first frame update
     public override void Start()
@@ -26,6 +26,8 @@ public class Player : EntityMP, TimedObject
         inventory = new Inventory();
         scrollLock = 0;
     }
+
+
 
     public IEnumerator ResetTriggers()
     {
@@ -152,6 +154,12 @@ public class Player : EntityMP, TimedObject
         //Debug.Log(selected);
         //Debug.Log(pickableInHand);
         //Debug.Log(inventory.pickables.Count);
+
+        if (shouldLerp)
+        {
+            transform.position = Vector3.Lerp(transform.position, lerpDest, lerpStep);
+            if ((Vector2)transform.position == lerpDest) shouldLerp = false;
+        }
     }
 
     public GameObject CreateTarget()

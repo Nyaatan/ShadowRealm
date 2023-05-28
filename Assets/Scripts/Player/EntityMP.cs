@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Riptide;
+using System.Linq;
 
 public class EntityMP : Entity
 {
@@ -9,11 +10,26 @@ public class EntityMP : Entity
     public ushort id;
     public static bool inSession = false;
     public Animator animator;
+    public bool shouldLerp = false;
+    public Vector2 lerpDest;
+    public float lerpStep = 0.05f;
+    public bool isLocal = false;
+    [SerializeField]
+    public Dictionary<long, Vector3> movementHistory = new Dictionary<long, Vector3>();
+    ushort maxSnapshots = 100;
+
     private void OnDestroy()
     {
         List.Remove(id);
     }
-
+    public void AddToHistory(Vector2 pos, long ts)
+    {
+        movementHistory.Add(ts, pos);
+        if (movementHistory.Count > maxSnapshots)
+        {
+            movementHistory.Remove(movementHistory.Keys.Min());
+        }
+    }
     public static void Spawn(ushort id, Vector2 pos, bool shouldSendSpawn=false)
     {
         EntityMP player;
@@ -30,10 +46,13 @@ public class EntityMP : Entity
         if (shouldSendSpawn)
             player.SendSpawn();
 
-        if(List.TryGetValue(1, out EntityMP host)){
-            if(!(host as Player).isLocal)
+        //if (List.TryGetValue(1, out EntityMP host))
+        {
+            if (id != NetworkManager.Singleton.Client.Id && 1 != NetworkManager.Singleton.Client.Id)
                 player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        } else player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            else player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        }
+        //else player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
     public GameObject CreateTarget(Vector2 pos)
@@ -50,16 +69,49 @@ public class EntityMP : Entity
 
         if (glyph.data.nature == GlyphData.Nature.SELF) animator.SetTrigger("SpellCastSelf");
         else animator.SetTrigger("SpellCast");
-        Debug.Log(glyph.data.vector);
+        //Debug.Log(glyph.data.vector);
         Spell spell = glyph.Use(this, CreateTarget(target));
         spell.id = spellID;
         ResearchManager.Instance.AddSpell(spell);
         //Destroy(glyph.gameObject);
     }
 
-    private void Move(Vector2 newPosition)
+    private void Move(Vector2 newPosition, long timestamp, float velocityY)
     {
-        transform.position = newPosition;
+        Vector2 lagDistance;
+        Debug.Log(movementHistory.Count);
+        if (movementHistory.TryGetValue(timestamp, out Vector3 oldPos))
+        {
+            Debug.Log("BABABABA");
+            lagDistance = newPosition - (Vector2)oldPos;
+        }
+        else
+        {
+            lagDistance = newPosition - (Vector2)transform.position;
+        }
+        if (isLocal)
+        {
+            Debug.Log("DUPSKO " + lagDistance);
+            if (lagDistance.magnitude > 5f)
+            {
+                movementHistory.Clear();
+            }
+            if (lagDistance.magnitude > 1f)
+            {
+                //Debug.Log(velocityY);
+                //lerpDest = newPosition;
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, velocityY));
+                //shouldLerp = true;
+                transform.position = newPosition;
+            }
+        } else if (lagDistance.magnitude > 0.2f)
+        {
+            lerpDest = newPosition;
+            shouldLerp = true;
+        }
+        //Debug.Log(lagDistance);
+        ResearchManager.Instance.HandlePositionChange(gameObject, lagDistance);
     }
     private void SendSpawn()
     {
@@ -93,10 +145,12 @@ public class EntityMP : Entity
     private static void PlayerMovement(Message message)
     {
         ushort playerId = message.GetUShort();
-        if (List.TryGetValue(playerId, out EntityMP player)){
+        if (List.TryGetValue(playerId, out EntityMP player))
+        {
             Vector2 pos = message.GetVector2();
-            ResearchManager.Instance.HandlePositionChange(player.gameObject, new Vector2(pos.x, pos.y));
-            player.Move(pos);
+            float velocityY = message.GetFloat();
+            long timestamp = message.GetLong();
+            player.Move(pos, player.isLocal ? timestamp : 0, velocityY);
         }
         //Debug.Log("MoveReceive");
         //Debug.Log(playerId);
@@ -145,7 +199,7 @@ public class EntityMP : Entity
         PlayerMovement contr = player.gameObject.GetComponent<PlayerMovement>();
         contr.horizontalMove = move;
         contr.jump = jump;
-        contr.ForceMove();
+        contr.ForceMove(message.GetLong());
     }
 
     [MessageHandler((ushort)MessageId.ServerSpellHit)]

@@ -36,16 +36,20 @@ public class PlayerMovement : MonoBehaviour
         }
         if (EntityMP.inSession && player.isLocal)
         {
-            if (player.id != authority) SendMovement();
-            else SendPosition();
+            if (player.id != authority)
+            {
+                controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
+                SendMovement();
+            }
+            else SendPosition(horizontalMove == 0 ? 0 : -1);
         }
         jump = false;
     }
 
-    public void ForceMove()
+    public void ForceMove(long timestamp)
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-        SendPosition();
+        SendPosition(timestamp);
     }
 
     private void Start()
@@ -55,18 +59,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void SendMovement()
     {
-        
+        long ts = ResearchManager.GetTimestamp();
+        player.AddToHistory(transform.position, ts);
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerInput);
         message.AddFloat(horizontalMove);
         message.AddBool(jump);
+        message.AddLong(ts);
         NetworkManager.Singleton.Client.Send(message);
     }
 
-    private void SendPosition()
+    private void SendPosition(long timestamp)
     {
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerMovement);
         message.AddUShort(player.id);
         message.AddVector2(player.transform.position);
+        message.AddFloat(GetComponent<Rigidbody2D>().velocity.y);
+        message.AddLong(timestamp);
         foreach(Player p in Player.List.Values) if(p.id != authority)
             NetworkManager.Singleton.Server.Send(message, p.id);
     }

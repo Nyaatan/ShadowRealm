@@ -6672,13 +6672,16 @@ MonoBehaviour:
   floatDamage: {fileID: 0}
   id: 0
   animator: {fileID: 263375873}
+  shouldLerp: 0
+  lerpDest: {x: 0, y: 0}
+  lerpStep: 0.2
+  isLocal: 0
   lastInteraction: {fileID: 0}
   selected: 1
   scrollLockDefault: 0.1
   animator: {fileID: 263375873}
   healthBar: {fileID: 2034560455}
   inventoryUI: {fileID: 21801963}
-  isLocal: 0
 --- !u!95 &263375873
 Animator:
   serializedVersion: 3
@@ -11810,13 +11813,16 @@ MonoBehaviour:
   floatDamage: {fileID: 0}
   id: 0
   animator: {fileID: 943745518}
+  shouldLerp: 0
+  lerpDest: {x: 0, y: 0}
+  lerpStep: 0.2
+  isLocal: 1
   lastInteraction: {fileID: 0}
   selected: 1
   scrollLockDefault: 0.1
   animator: {fileID: 943745518}
   healthBar: {fileID: 2034560455}
   inventoryUI: {fileID: 21801963}
-  isLocal: 1
 --- !u!1001 &962123298
 PrefabInstance:
   m_ObjectHideFlags: 0

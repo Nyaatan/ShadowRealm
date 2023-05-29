@@ -54,7 +54,7 @@ public class EntityMP : Entity
         Spell spell = glyph.Use(this, CreateTarget(target));
         spell.id = spellID;
         ResearchManager.Instance.AddSpell(spell);
-        //Destroy(glyph.gameObject);
+        Destroy(glyph.gameObject);
     }
 
     private void Move(Vector2 newPosition)

@@ -30,18 +30,21 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!EntityMP.inSession || (player.id == authority && (Player.List[authority] as Player).isLocal))
+        if (!player.shouldLerp)
         {
-            controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-        }
-        if (EntityMP.inSession && player.isLocal)
-        {
-            if (player.id != authority)
+            if (!EntityMP.inSession || (player.id == authority && (Player.List[authority] as Player).isLocal))
             {
                 controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-                SendMovement();
             }
-            else SendPosition(horizontalMove == 0 ? 0 : -1);
+            if (EntityMP.inSession && player.isLocal)
+            {
+                if (player.id != authority)
+                {
+                    controller.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
+                    SendMovement();
+                }
+                else SendPosition(horizontalMove == 0 ? 0 : -1);
+            }
         }
         jump = false;
     }

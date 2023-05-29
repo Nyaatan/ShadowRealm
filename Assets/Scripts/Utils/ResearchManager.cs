@@ -101,7 +101,7 @@ public class ResearchManager : MonoBehaviour
         }
     }
 
-    public void HandlePositionChange(GameObject obj, Vector2 lagDistance){
+    public void HandlePositionChange(GameObject obj, Vector2 lagDistance, bool reset, bool correction){
         if(EntityMP.inSession){
             //Log("POS;" + obj.transform.position + ";" + pos + ";" + obj.GetComponent<PlayerMovement>().horizontalMove + ";" + Vector3.Distance(obj.transform.position, pos));
             Log(string.Join(";", new List<string> {
@@ -109,7 +109,9 @@ public class ResearchManager : MonoBehaviour
                     "POS",
                     obj.transform.position.ToString(),
                     obj.GetComponent<PlayerMovement>().horizontalMove.ToString(),
-                    lagDistance.ToString()
+                    lagDistance.ToString(),
+                    reset.ToString(),
+                    correction.ToString()
                     }));
         }
     }

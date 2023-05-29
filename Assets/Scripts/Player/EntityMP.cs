@@ -12,12 +12,12 @@ public class EntityMP : Entity
     public Animator animator;
     public bool shouldLerp = false;
     public Vector2 lerpDest;
-    public float lerpStep = 0.05f;
+    public float lerpStep = 0.01f;
     public bool isLocal = false;
     [SerializeField]
     public Dictionary<long, Vector3> movementHistory = new Dictionary<long, Vector3>();
-    ushort maxSnapshots = 100;
-    ushort memoryResetTicks = 20;
+    ushort maxSnapshots = 500;
+    ushort memoryResetTicks = 50;
     ushort memoryResetTimer = 20;
     bool memoryReset = false;
     private void OnDestroy()
@@ -78,14 +78,34 @@ public class EntityMP : Entity
         //Destroy(glyph.gameObject);
     }
 
+    private (Vector2, Vector2) InterpolateMovement(Rigidbody2D rb, long start, Vector2 newPos)
+    {
+        List<long> keys = new List<long>(movementHistory.Keys);
+        keys.Sort();
+        int x = keys.IndexOf(start);
+        long lastTS = keys[x];
+        Vector2 pos = newPos;
+        Vector2 v = rb.velocity;
+        Debug.Log("DADADADADADAD " + v);
+        Vector2 g = Physics2D.gravity * rb.gravityScale;
+        for(int i = x+1; i<movementHistory.Count; ++i)
+        {
+            float dt = (keys[i] - lastTS) / 1000;
+            v += g * dt;
+            pos += v * dt;
+            lastTS = keys[i];
+            movementHistory[lastTS] = pos;
+        }
+        return (movementHistory[lastTS], v);
+    }
 
     private void Move(Vector2 newPosition, long timestamp, Vector2 velocity)
     {
         Vector2 lagDistance;
-        Debug.Log(movementHistory.Count);
+        bool reset = false;
+        bool correction = false;
         if (movementHistory.TryGetValue(timestamp, out Vector3 oldPos))
         {
-            Debug.Log("BABABABA");
             lagDistance = newPosition - (Vector2)oldPos;
         }
         else
@@ -102,30 +122,37 @@ public class EntityMP : Entity
         }
         else if (isLocal)
         {
-            Debug.Log("DUPSKO " + lagDistance);
-            if (lagDistance.magnitude > 5f)
+            if (lagDistance.magnitude > 10f)
             {
                 movementHistory.Clear();
                 memoryReset = true;
                 memoryResetTimer = memoryResetTicks;
-            }
-            if (lagDistance.magnitude > 1f)
-            {
-                //Debug.Log(velocityY);
-                //lerpDest = newPosition;
-
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, velocity.y));
-                //shouldLerp = true;
                 transform.position = newPosition;
+                Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                rb.velocity = velocity;
+                reset = true;
             }
+            else if (lagDistance.magnitude > 2f)
+            {
+                Rigidbody2D rb = GetComponent<Rigidbody2D>();
+                rb.velocity = velocity;
+                (Vector2 lastPos, Vector2 v) = InterpolateMovement(rb, timestamp, newPosition);
+                memoryReset = true;
+                memoryResetTimer = memoryResetTicks;
+                rb.velocity = velocity;
+                shouldLerp = true;
+                lerpDest = newPosition;
+                //transform.position = lastPos;
+                correction = true;
+            }
+            ResearchManager.Instance.HandlePositionChange(gameObject, lagDistance, reset, correction);
         } else if (lagDistance.magnitude > 0.2f)
         {
             lerpDest = newPosition;
             shouldLerp = true;
         }
         //Debug.Log(lagDistance);
-        ResearchManager.Instance.HandlePositionChange(gameObject, lagDistance);
+        
     }
     private void SendSpawn()
     {

@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerMovement);
         message.AddUShort(player.id);
         message.AddVector2(player.transform.position);
-        message.AddFloat(GetComponent<Rigidbody2D>().velocity.y);
+        message.AddVector2(GetComponent<Rigidbody2D>().velocity);
         message.AddLong(timestamp);
         foreach(Player p in Player.List.Values) if(p.id != authority)
             NetworkManager.Singleton.Server.Send(message, p.id);

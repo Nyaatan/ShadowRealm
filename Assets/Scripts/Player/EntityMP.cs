@@ -17,7 +17,9 @@ public class EntityMP : Entity
     [SerializeField]
     public Dictionary<long, Vector3> movementHistory = new Dictionary<long, Vector3>();
     ushort maxSnapshots = 100;
-
+    ushort memoryResetTicks = 20;
+    ushort memoryResetTimer = 20;
+    bool memoryReset = false;
     private void OnDestroy()
     {
         List.Remove(id);
@@ -76,7 +78,8 @@ public class EntityMP : Entity
         //Destroy(glyph.gameObject);
     }
 
-    private void Move(Vector2 newPosition, long timestamp, float velocityY)
+
+    private void Move(Vector2 newPosition, long timestamp, Vector2 velocity)
     {
         Vector2 lagDistance;
         Debug.Log(movementHistory.Count);
@@ -89,19 +92,30 @@ public class EntityMP : Entity
         {
             lagDistance = newPosition - (Vector2)transform.position;
         }
-        if (isLocal)
+        if (memoryReset)
+        {
+            memoryResetTimer--;
+            if(memoryResetTimer <= 0)
+            {
+                memoryReset = false;
+            }
+        }
+        else if (isLocal)
         {
             Debug.Log("DUPSKO " + lagDistance);
             if (lagDistance.magnitude > 5f)
             {
                 movementHistory.Clear();
+                memoryReset = true;
+                memoryResetTimer = memoryResetTicks;
             }
             if (lagDistance.magnitude > 1f)
             {
                 //Debug.Log(velocityY);
                 //lerpDest = newPosition;
+
                 GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, velocityY));
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, velocity.y));
                 //shouldLerp = true;
                 transform.position = newPosition;
             }
@@ -148,9 +162,9 @@ public class EntityMP : Entity
         if (List.TryGetValue(playerId, out EntityMP player))
         {
             Vector2 pos = message.GetVector2();
-            float velocityY = message.GetFloat();
+            Vector2 velocity = message.GetVector2();
             long timestamp = message.GetLong();
-            player.Move(pos, player.isLocal ? timestamp : 0, velocityY);
+            player.Move(pos, player.isLocal ? timestamp : 0, velocity);
         }
         //Debug.Log("MoveReceive");
         //Debug.Log(playerId);

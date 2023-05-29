@@ -117,15 +117,19 @@ public class Player : EntityMP, TimedObject
                     else animator.SetTrigger("SpellCast");
                 }
                 GameObject target = CreateTarget();
-                if(!inSession || (List[1] as Player).isLocal){
-                    Spell spell = pickableInHand.Use(this, target);
-                    ResearchManager.Instance.AssignSpellID(spell);
-                    if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, spell.id);
-                }
-                else if(inSession && !(List[1] as Player).isLocal) {
-                    pickableInHand.isOnCooldown = true;
-                    SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, ResearchManager.Instance.CreateSpellID());
-                }
+                //if(!inSession || (List[1] as Player).isLocal){
+                //    Spell spell = pickableInHand.Use(this, target);
+                //    ResearchManager.Instance.AssignSpellID(spell);
+                //    if(inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, spell.id);
+                //}
+                //else if(inSession && !(List[1] as Player).isLocal) {
+                //    pickableInHand.isOnCooldown = true;
+                //    SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, ResearchManager.Instance.CreateSpellID());
+                //}
+                Spell spell = pickableInHand.Use(this, target);
+                ResearchManager.Instance.AssignSpellID(spell);
+                if (inSession) SendAttack(new Vector2(target.transform.position.x, target.transform.position.y), ((Glyph)pickableInHand).data, spell.id);
+
                 ResetTriggers();
             }
             if (Input.GetKeyDown(KeyCode.G)) DropItem();

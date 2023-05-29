@@ -208,7 +208,7 @@ public class EntityMP : Entity
         short tier = message.GetShort();
         Debug.Log(glyphVector);
         Debug.Log(tier);
-        if (List.TryGetValue(playerId, out EntityMP player))
+        if (List.TryGetValue(playerId, out EntityMP player)) if(player.id != NetworkManager.Singleton.Client.Id)
             player.Attack(targetTransform, glyphVector, tier, spellID);
 
     }

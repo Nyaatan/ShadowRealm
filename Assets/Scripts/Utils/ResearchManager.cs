@@ -12,6 +12,7 @@ public class ResearchManager : MonoBehaviour
     private List<string> log = new List<string>();
     public ushort research_id = 0;
     public bool invunerability = false;
+    short ping = 0;
 
     void Start()
     {
@@ -26,6 +27,11 @@ public class ResearchManager : MonoBehaviour
                 player.invunerable = invunerability;
             }
         }
+    }
+
+    public void CalculatePing(long timestamp)
+    {
+        ping = NetworkManager.Singleton.Client.RTT;
     }
 
     void Awake()
@@ -71,7 +77,8 @@ public class ResearchManager : MonoBehaviour
                      spell.data.nature.ToString(),
                      spell.data.width.ToString(), 
                      playerID.ToString(), 
-                     GetSpellDistance(spell, playerID).ToString()
+                     GetSpellDistance(spell, playerID).ToString(),
+                     ping.ToString()
                      }));
             }
             else if(destroyedSpells.TryGetValue(spellID, out DestroyedSpell dspell)){
@@ -83,7 +90,8 @@ public class ResearchManager : MonoBehaviour
                     dspell.nature.ToString(),
                     dspell.width.ToString(), 
                     playerID.ToString(), 
-                    GetSpellDistance(dspell, playerID).ToString()
+                    GetSpellDistance(dspell, playerID).ToString(),
+                     ping.ToString()
                     }));
             }
         }
@@ -111,7 +119,8 @@ public class ResearchManager : MonoBehaviour
                     obj.GetComponent<PlayerMovement>().horizontalMove.ToString(),
                     lagDistance.ToString(),
                     reset.ToString(),
-                    correction.ToString()
+                    correction.ToString(),
+                     ping.ToString()
                     }));
         }
     }
@@ -124,7 +133,8 @@ public class ResearchManager : MonoBehaviour
                     "COL", 
                     spell.id.ToString(), 
                     obj.transform.position.ToString(), 
-                    spell.data.range.ToString(), 
+                    spell.data.range.ToString(),
+                     ping.ToString()
                     }));
         }
     }

@@ -162,7 +162,7 @@ public class Player : EntityMP, TimedObject
         if (shouldLerp)
         {
             transform.position = Vector3.Lerp(transform.position, lerpDest, lerpStep);
-            if (Vector2.Distance((Vector2)transform.position, lerpDest) < 0.5f) shouldLerp = false;
+            if (Vector2.Distance((Vector2)transform.position, lerpDest) < 0.1f) shouldLerp = false;
         }
     }
 

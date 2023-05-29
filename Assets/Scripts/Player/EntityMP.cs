@@ -101,6 +101,7 @@ public class EntityMP : Entity
 
     private void Move(Vector2 newPosition, long timestamp, Vector2 velocity)
     {
+        ResearchManager.Instance.CalculatePing(timestamp);
         Vector2 lagDistance;
         bool reset = false;
         bool correction = false;
@@ -146,7 +147,7 @@ public class EntityMP : Entity
                 correction = true;
             }
             ResearchManager.Instance.HandlePositionChange(gameObject, lagDistance, reset, correction);
-        } else if (lagDistance.magnitude > 0.2f)
+        } else if (lagDistance.magnitude > 0.1f)
         {
             lerpDest = newPosition;
             shouldLerp = true;

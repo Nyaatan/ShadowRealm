@@ -15,7 +15,7 @@ public class EntityMP : Entity
     public float lerpStep = 0.2f;
     public bool isLocal = false;
     [SerializeField]
-    public Dictionary<long, Vector3> movementHistory = new Dictionary<long, Vector3>();
+    public Dictionary<long, (Vector3, float)> movementHistory = new Dictionary<long, (Vector3, float)>();
     ushort maxSnapshots = 500;
     ushort memoryResetTicks = 10;
     ushort memoryResetTimer = 20;
@@ -28,9 +28,9 @@ public class EntityMP : Entity
     {
         List.Remove(id);
     }
-    public void AddToHistory(Vector2 pos, long ts)
+    public void AddToHistory(Vector2 pos, float horizontal, long ts)
     {
-        movementHistory.Add(ts, pos);
+        movementHistory.Add(ts, (pos, horizontal));
         if (movementHistory.Count > maxSnapshots)
         {
             movementHistory.Remove(movementHistory.Keys.Min());
@@ -83,7 +83,7 @@ public class EntityMP : Entity
         glyph.gameObject.SetActive(false);
     }
 
-    private (Vector2, Vector2) InterpolateMovement(Rigidbody2D rb, long start, Vector2 newPos)
+    private (Vector2, Vector2) InterpolateMovement(Rigidbody2D rb, long start, Vector2 newPos, float hmove)
     {
         List<long> keys = new List<long>(movementHistory.Keys);
         keys.Sort();
@@ -97,29 +97,32 @@ public class EntityMP : Entity
         {
             float dt = (keys[i] - lastTS) / 1000;
             v += g * dt;
+            v.x = hmove / 5;
             pos += v * dt;
+            hmove = movementHistory[lastTS].Item2;
             lastTS = keys[i];
-            movementHistory[lastTS] = pos;
+            movementHistory[lastTS] = (pos, hmove);
         }
-        return (movementHistory[lastTS], v);
+        return (movementHistory[lastTS].Item1, v);
     }
 
     private void Move(Vector2 newPosition, long timestamp, Vector2 velocity)
     {
         ResearchManager.Instance.CalculatePing(timestamp);
         Vector2 lagDistance;
+        float hmove = 0;
         bool reset = false;
         bool correction = false;
-        if (movementHistory.TryGetValue(timestamp, out Vector3 oldPos))
+        if (movementHistory.TryGetValue(timestamp, out var chunk))
         {
-            lagDistance = newPosition - (Vector2)oldPos;
+            lagDistance = newPosition - (Vector2)chunk.Item1;
+            hmove = chunk.Item2;
             //Debug.Log("OOGA " + lagDistance.magnitude);
         }
         else
         {
             lagDistance = newPosition - (Vector2)transform.position;
         }
-        Debug.Log("DUPSKO EXTRA " + GetComponent<PlayerMovement>().enabled);
         if (memoryReset)
         {
             memoryResetTimer--;
@@ -145,11 +148,12 @@ public class EntityMP : Entity
             {
                 Rigidbody2D rb = GetComponent<Rigidbody2D>();
                 rb.velocity = velocity;
-                (Vector2 lastPos, Vector2 v) = InterpolateMovement(rb, timestamp, newPosition);
+                (Vector2 lastPos, Vector2 v) = InterpolateMovement(rb, timestamp, newPosition, rb.velocity.x * 5);
                 memoryReset = true;
                 memoryResetTimer = memoryResetTicks;
-                rb.MovePosition(lastPos);
-                rb.velocity = velocity;
+                //rb.MovePosition(lastPos);
+                transform.position = lastPos;
+                rb.velocity = v;
 
                 //transform.position = lastPos;
                 correction = true;

@@ -80,6 +80,7 @@ public class EntityMP : Entity
         spell.id = spellID;
         ResearchManager.Instance.AddSpell(spell);
         //Destroy(glyph.gameObject);
+        glyph.gameObject.SetActive(false);
     }
 
     private (Vector2, Vector2) InterpolateMovement(Rigidbody2D rb, long start, Vector2 newPos)

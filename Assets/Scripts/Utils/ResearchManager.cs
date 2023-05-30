@@ -12,6 +12,7 @@ public class ResearchManager : MonoBehaviour
     private List<string> log = new List<string>();
     public ushort research_id = 0;
     public bool invunerability = false;
+    short ping = 0;
 
     void Start()
     {
@@ -26,6 +27,11 @@ public class ResearchManager : MonoBehaviour
                 player.invunerable = invunerability;
             }
         }
+    }
+
+    public void CalculatePing(long timestamp)
+    {
+        ping = NetworkManager.Singleton.Client.RTT;
     }
 
     void Awake()
@@ -71,7 +77,8 @@ public class ResearchManager : MonoBehaviour
                      spell.data.nature.ToString(),
                      spell.data.width.ToString(), 
                      playerID.ToString(), 
-                     GetSpellDistance(spell, playerID).ToString()
+                     GetSpellDistance(spell, playerID).ToString(),
+                     ping.ToString()
                      }));
             }
             else if(destroyedSpells.TryGetValue(spellID, out DestroyedSpell dspell)){
@@ -83,7 +90,8 @@ public class ResearchManager : MonoBehaviour
                     dspell.nature.ToString(),
                     dspell.width.ToString(), 
                     playerID.ToString(), 
-                    GetSpellDistance(dspell, playerID).ToString()
+                    GetSpellDistance(dspell, playerID).ToString(),
+                     ping.ToString()
                     }));
             }
         }
@@ -118,14 +126,23 @@ public class ResearchManager : MonoBehaviour
     }
 
     public void HandleSpellCollision(Spell spell, GameObject obj){
+        ushort objID = 0;
+        try
+        {
+            objID = obj.GetComponent<Player>().id;
+        }
+        catch
+        {   }
         if(EntityMP.inSession){
             //Log("COL;" + spell.id + ";" + obj.transform.position + ";" + spell.data.range);
-            Log(string.Join(";",  new List<string> {
+            Log(string.Join(";", new List<string> {
                     GetTimestamp().ToString(),
-                    "COL", 
-                    spell.id.ToString(), 
-                    obj.transform.position.ToString(), 
-                    spell.data.range.ToString(), 
+                    "COL",
+                    spell.id.ToString(),
+                    obj.transform.position.ToString(),
+                    spell.data.range.ToString(),
+                    objID.ToString(),
+                    ping.ToString()
                     }));
         }
     }

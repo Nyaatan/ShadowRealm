@@ -71,7 +71,11 @@ public class SpellEffectHandler : MonoBehaviour
         foreach (GameObject detection in detections)
         {
             Entity entity = detection.GetComponent<Entity>();
-            if (entity != null) entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
+            if (entity != null)
+            {
+                ResearchManager.Instance.HandleSpellCollision(spell, entity.gameObject);
+                entity.ReceiveDamage(spell.data.damage, spell.data.elements.ToArray(), false, spell.id);
+            }
         }
     }
 

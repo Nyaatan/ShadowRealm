@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     Player player;
     public Animator animator;
 
+    public bool canMove = true;
+
     public ushort authority = 1;
 
     // Update is called once per frame
@@ -30,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!player.shouldLerp)
+        if (!player.shouldLerp && canMove)
         {
             if (!EntityMP.inSession || (player.id == authority && (Player.List[authority] as Player).isLocal))
             {
@@ -46,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
                 else SendPosition(horizontalMove == 0 ? 0 : -1);
             }
         }
+        else horizontalMove = 0;
         jump = false;
     }
 
@@ -77,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
         message.AddUShort(player.id);
         message.AddVector2(player.transform.position);
         message.AddVector2(GetComponent<Rigidbody2D>().velocity);
+        if(player.id != 1) Debug.Log(GetComponent<Rigidbody2D>().velocity);
         message.AddLong(timestamp);
         foreach(Player p in Player.List.Values) if(p.id != authority)
             NetworkManager.Singleton.Server.Send(message, p.id);

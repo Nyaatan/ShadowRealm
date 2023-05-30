@@ -6676,6 +6676,8 @@ MonoBehaviour:
   lerpDest: {x: 0, y: 0}
   lerpStep: 0.2
   isLocal: 0
+  smallThreshold: 3
+  bigThreshold: 15
   lastInteraction: {fileID: 0}
   selected: 1
   scrollLockDefault: 0.1
@@ -6718,6 +6720,7 @@ MonoBehaviour:
   runSpeed: 69
   jump: 0
   animator: {fileID: 263375873}
+  canMove: 1
   authority: 1
 --- !u!114 &263375875
 MonoBehaviour:
@@ -11763,6 +11766,7 @@ MonoBehaviour:
   runSpeed: 69
   jump: 0
   animator: {fileID: 943745518}
+  canMove: 1
   authority: 1
 --- !u!95 &943745518
 Animator:
@@ -11817,6 +11821,8 @@ MonoBehaviour:
   lerpDest: {x: 0, y: 0}
   lerpStep: 0.2
   isLocal: 1
+  smallThreshold: 3
+  bigThreshold: 15
   lastInteraction: {fileID: 0}
   selected: 1
   scrollLockDefault: 0.1

@@ -159,10 +159,17 @@ public class Player : EntityMP, TimedObject
         //Debug.Log(pickableInHand);
         //Debug.Log(inventory.pickables.Count);
 
+        
+    }
+
+    public void FixedUpdate()
+    {
         if (shouldLerp)
         {
+            GetComponent<Rigidbody2D>().simulated = shouldLerp;
             transform.position = Vector3.Lerp(transform.position, lerpDest, lerpStep);
             if (Vector2.Distance((Vector2)transform.position, lerpDest) < 0.1f) shouldLerp = false;
+            GetComponent<Rigidbody2D>().simulated = !shouldLerp;
         }
     }
 

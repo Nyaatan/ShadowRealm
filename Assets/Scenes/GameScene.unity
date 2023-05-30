@@ -12192,7 +12192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellID: 0
   research_id: 0
-  invunerability: 0
+  invunerability: 1
 --- !u!4 &1007182695
 Transform:
   m_ObjectHideFlags: 0

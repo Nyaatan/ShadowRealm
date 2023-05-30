@@ -126,15 +126,23 @@ public class ResearchManager : MonoBehaviour
     }
 
     public void HandleSpellCollision(Spell spell, GameObject obj){
+        ushort objID = 0;
+        try
+        {
+            objID = obj.GetComponent<Player>().id;
+        }
+        catch
+        {   }
         if(EntityMP.inSession){
             //Log("COL;" + spell.id + ";" + obj.transform.position + ";" + spell.data.range);
-            Log(string.Join(";",  new List<string> {
+            Log(string.Join(";", new List<string> {
                     GetTimestamp().ToString(),
-                    "COL", 
-                    spell.id.ToString(), 
-                    obj.transform.position.ToString(), 
+                    "COL",
+                    spell.id.ToString(),
+                    obj.transform.position.ToString(),
                     spell.data.range.ToString(),
-                     ping.ToString()
+                    objID.ToString(),
+                    ping.ToString()
                     }));
         }
     }

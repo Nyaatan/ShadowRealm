@@ -17,8 +17,8 @@ public class EntityMP : Entity
     [SerializeField]
     public Dictionary<long, (Vector3, float)> movementHistory = new Dictionary<long, (Vector3, float)>();
     ushort maxSnapshots = 500;
-    ushort memoryResetTicks = 10;
-    ushort memoryResetTimer = 20;
+    ushort memoryResetTicks = 5;
+    ushort memoryResetTimer = 5;
     ushort canMoveTimeout = 50;
     bool memoryReset = false;
 

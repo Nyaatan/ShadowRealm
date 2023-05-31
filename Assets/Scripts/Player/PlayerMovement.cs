@@ -65,8 +65,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void SendMovement()
     {
-        long ts = ResearchManager.GetTimestamp();
-        player.AddToHistory(transform.position, horizontalMove, ts);
+        long ts;
+        try
+        {
+            ts = ResearchManager.GetTimestamp();
+            player.AddToHistory(transform.position, horizontalMove, ts);
+        } catch (System.ArgumentException)
+        {
+            ts = ResearchManager.GetTimestamp();
+            player.AddToHistory(transform.position, horizontalMove, ts);
+        }
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerInput);
         message.AddFloat(horizontalMove);
         message.AddBool(jump);

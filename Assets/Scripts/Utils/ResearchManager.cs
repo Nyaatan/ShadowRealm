@@ -9,7 +9,8 @@ public class ResearchManager : MonoBehaviour
     public ushort spellID;
     public Dictionary<ushort, Spell> spells = new Dictionary<ushort, Spell>(); 
     public Dictionary<ushort, DestroyedSpell> destroyedSpells = new Dictionary<ushort, DestroyedSpell>(); 
-    private List<string> log = new List<string>();
+    private List<string> pos_log = new List<string>();
+    private List<string> hit_log = new List<string>();
     public ushort research_id = 0;
     public bool invunerability = false;
     short ping = 0;
@@ -72,27 +73,20 @@ public class ResearchManager : MonoBehaviour
             if(spells.TryGetValue(spellID, out Spell spell)){
                 Log(string.Join(";", new List<string> {
                     GetTimestamp().ToString(),
-                    "HIT", spellID.ToString(),
-                     spell.gameObject.transform.position.ToString(), 
-                     spell.data.nature.ToString(),
-                     spell.data.width.ToString(), 
+                     ping.ToString(),
+                    "HIT", 
+                    spellID.ToString(),
                      playerID.ToString(), 
-                     GetSpellDistance(spell, playerID).ToString(),
-                     ping.ToString()
-                     }));
+                     }), "hit");
             }
             else if(destroyedSpells.TryGetValue(spellID, out DestroyedSpell dspell)){
                 Log(string.Join(";",  new List<string> {
                     GetTimestamp().ToString(),
-                    "DHT", 
+                     ping.ToString(),
+                    "HIT", 
                     spellID.ToString(), 
-                    dspell.position.ToString(), 
-                    dspell.nature.ToString(),
-                    dspell.width.ToString(), 
-                    playerID.ToString(), 
-                    GetSpellDistance(dspell, playerID).ToString(),
-                     ping.ToString()
-                    }));
+                    playerID.ToString()
+                    }), "hit");
             }
         }
     }
@@ -109,19 +103,17 @@ public class ResearchManager : MonoBehaviour
         }
     }
 
-    public void HandlePositionChange(GameObject obj, Vector2 lagDistance, bool reset, bool correction){
+    public void HandlePositionChange(GameObject obj, Vector2 oldPos, Vector2 lagDistance, Vector2 newPos){
         if(EntityMP.inSession){
             //Log("POS;" + obj.transform.position + ";" + pos + ";" + obj.GetComponent<PlayerMovement>().horizontalMove + ";" + Vector3.Distance(obj.transform.position, pos));
             Log(string.Join(";", new List<string> {
                     GetTimestamp().ToString(),
-                    "POS",
-                    obj.transform.position.ToString(),
-                    obj.GetComponent<PlayerMovement>().horizontalMove.ToString(),
-                    lagDistance.ToString(),
-                    reset.ToString(),
-                    correction.ToString(),
-                     ping.ToString()
-                    }));
+                    ping.ToString(),
+                    Vector2.Distance(oldPos, obj.transform.position).ToString(),
+                    lagDistance.magnitude.ToString(),
+                    Vector2.Distance(obj.transform.position, newPos).ToString(),
+                    obj.GetComponent<PlayerMovement>().horizontalMove.ToString()
+                    }), "pos");
         }
     }
 
@@ -137,18 +129,19 @@ public class ResearchManager : MonoBehaviour
             //Log("COL;" + spell.id + ";" + obj.transform.position + ";" + spell.data.range);
             Log(string.Join(";", new List<string> {
                     GetTimestamp().ToString(),
+                    ping.ToString(),
                     "COL",
                     spell.id.ToString(),
-                    obj.transform.position.ToString(),
-                    spell.data.range.ToString(),
-                    objID.ToString(),
-                    ping.ToString()
-                    }));
+                    objID.ToString()
+                    }), "hit");
         }
     }
 
-    public void Log(string data){
-        log.Add(data);
+    public void Log(string data, string file){
+        if(file == "pos")
+            pos_log.Add(data);
+        else if (file == "hit")
+            hit_log.Add(data);
     }
 
      public static long GetTimestamp()
@@ -157,18 +150,26 @@ public class ResearchManager : MonoBehaviour
     }
 
     public void WriteToFile(){
-        string path = @"research" + research_id + ".log";
-        //Debug.Log("LOGGING " + log.Count + " LINES");
+        string path = @"pos" + research_id + ".log";
         if (File.Exists(path)) using (StreamWriter sw = File.AppendText(path))
             {
-                //Debug.Log(GetTimestamp());
-                foreach(string line in log) sw.WriteLine(line);
+                foreach(string line in pos_log) sw.WriteLine(line);
             }
             else using (StreamWriter sw = File.CreateText(path))
             {
-                foreach(string line in log) sw.WriteLine(line);
+                foreach(string line in pos_log) sw.WriteLine(line);
             }
-        log.Clear();
+        pos_log.Clear();
+        path = @"hit" + research_id + ".log";
+        if (File.Exists(path)) using (StreamWriter sw = File.AppendText(path))
+            {
+                foreach(string line in hit_log) sw.WriteLine(line);
+            }
+            else using (StreamWriter sw = File.CreateText(path))
+            {
+                foreach(string line in hit_log) sw.WriteLine(line);
+            }
+        hit_log.Clear();
     }
 
     private IEnumerator WriteLog(){
@@ -181,7 +182,8 @@ public class ResearchManager : MonoBehaviour
     public void Reset(){
         spells = new Dictionary<ushort, Spell>(); 
         destroyedSpells = new Dictionary<ushort, DestroyedSpell>(); 
-        log = new List<string>();
+        pos_log.Clear();
+        hit_log.Clear();
         spellID = 0;
     }
 

@@ -68,12 +68,10 @@ public class PlayerMovement : MonoBehaviour
         long ts;
         try
         {
-            ts = ResearchManager.GetTimestamp();
-            player.AddToHistory(transform.position, horizontalMove, ts);
+            ts = player.AddToHistory(transform.position, horizontalMove);
         } catch (System.ArgumentException)
         {
-            ts = ResearchManager.GetTimestamp();
-            player.AddToHistory(transform.position, horizontalMove, ts);
+            ts = player.AddToHistory(transform.position, horizontalMove);
         }
         Message message = Message.Create(MessageSendMode.Unreliable, MessageId.PlayerInput);
         message.AddFloat(horizontalMove);

@@ -22,19 +22,24 @@ public class EntityMP : Entity
     ushort canMoveTimeout = 50;
     bool memoryReset = false;
 
+    private long history_id = 0;
+
+    private Vector2 oldPos = new Vector2(0f,0f);
+
     public float smallThreshold = 3f;
     public float bigThreshold = 15f;
     private void OnDestroy()
     {
         List.Remove(id);
     }
-    public void AddToHistory(Vector2 pos, float horizontal, long ts)
+    public long AddToHistory(Vector2 pos, float horizontal)
     {
-        movementHistory.Add(ts, (pos, horizontal));
+        movementHistory.Add(++history_id, (pos, horizontal));
         if (movementHistory.Count > maxSnapshots)
         {
             movementHistory.Remove(movementHistory.Keys.Min());
         }
+        return history_id;
     }
     public static void Spawn(ushort id, Vector2 pos, bool shouldSendSpawn=false)
     {
@@ -134,6 +139,7 @@ public class EntityMP : Entity
         }
         else if (isLocal)
         {
+            Vector2 lastPos = transform.position;
             if (lagDistance.magnitude > bigThreshold)
             {
                 movementHistory.Clear();
@@ -148,17 +154,18 @@ public class EntityMP : Entity
             {
                 Rigidbody2D rb = GetComponent<Rigidbody2D>();
                 rb.velocity = velocity;
-                (Vector2 lastPos, Vector2 v) = InterpolateMovement(rb, timestamp, newPosition, rb.velocity.x * 5);
+                (Vector2 last, Vector2 v) = InterpolateMovement(rb, timestamp, newPosition, rb.velocity.x * 5);
+                lastPos = last;
                 memoryReset = true;
                 memoryResetTimer = memoryResetTicks;
                 //rb.MovePosition(lastPos);
-                transform.position = lastPos;
                 rb.velocity = v;
-
                 //transform.position = lastPos;
                 correction = true;
             }
-            ResearchManager.Instance.HandlePositionChange(gameObject, lagDistance, reset, correction);
+            ResearchManager.Instance.HandlePositionChange(gameObject, oldPos, lagDistance, lastPos);
+            transform.position = lastPos;
+            oldPos = transform.position;
         } else if (lagDistance.magnitude > 0.1f)
         {
             lerpDest = newPosition;

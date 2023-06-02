@@ -60,6 +60,7 @@ public class EntityMP : Entity
 
     private void Move(Vector2 newPosition)
     {
+        ResearchManager.Instance.HandlePositionChange(gameObject, newPosition);
         transform.position = newPosition;
     }
     private void SendSpawn()
@@ -96,7 +97,6 @@ public class EntityMP : Entity
         ushort playerId = message.GetUShort();
         if (List.TryGetValue(playerId, out EntityMP player)){
             Vector2 pos = message.GetVector2();
-            ResearchManager.Instance.HandlePositionChange(player.gameObject, new Vector2(pos.x, pos.y));
             player.Move(pos);
         }
         //Debug.Log("MoveReceive");

@@ -43,7 +43,7 @@ public class ResearchManager : MonoBehaviour
 
     public void AssignSpellID(Spell spell, ushort ID=65535){
         if(EntityMP.inSession){
-            if(ID == 65535) ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 12) + spellID++);
+            if(ID == 65535) ID = (ushort)((((ushort)NetworkManager.Singleton.Client.Id) << 15) + spellID++);
             spell.id = ID;
             AddSpell(spell);
         }

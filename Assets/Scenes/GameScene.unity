@@ -11208,6 +11208,7 @@ MonoBehaviour:
   schema: {fileID: 11400000, guid: 47babc6bd5a75654fad5e23ae75d9cc2, type: 2}
   scale: 2.137
   isCreated: 0
+  spawnPos: {x: 0, y: 0}
   Tavern: {fileID: 105305610}
   defaultSpawn: {fileID: 1996578418}
   nodes: 0

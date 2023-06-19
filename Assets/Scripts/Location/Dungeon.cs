@@ -25,6 +25,8 @@ public class Dungeon : MonoBehaviour, Location
 
     public static Dungeon Instance;
 
+    public Vector2 spawnPos = Vector2.zero;
+
     public void Awake(){
         Instance = this;
     }
@@ -281,8 +283,9 @@ public class Dungeon : MonoBehaviour, Location
 
         if(room.node.type == NodeType.NORMAL) SpawnEnemies(room);
 
-
-        GameManager.Instance.player.transform.position = (lastRoom.spawns[((Waypoint)GameManager.Instance.player.GetComponent<Player>().lastInteraction).direction] + new Vector2(0, 1)) * scale;
+        if (spawnPos.Equals(Vector2.zero)) spawnPos = (lastRoom.spawns[((Waypoint)GameManager.Instance.player.GetComponent<Player>().lastInteraction).direction] + new Vector2(0, 1)) * scale;
+        GameManager.Instance.player.transform.position = spawnPos;
+        spawnPos = Vector2.zero;
         GameManager.Instance.player.GetComponent<Player>().lastInteraction = null;
         GameManager.Instance.mainCamera.GetComponent<CameraController>().warpToTarget();
 

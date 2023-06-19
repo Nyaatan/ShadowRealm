@@ -27,7 +27,7 @@ public class EntityMP : Entity
     private Vector2 oldPos = new Vector2(0f,0f);
 
     public float smallThreshold = 3f;
-    public float bigThreshold = 15f;
+    public float bigThreshold = 7f;
     private void OnDestroy()
     {
         List.Remove(id);
@@ -51,6 +51,7 @@ public class EntityMP : Entity
             player = NetworkManager.Singleton.PlayerPrefab;
             player.gameObject.SetActive(true);
         player.transform.position = pos;
+        GameManager.Instance.dungeon.spawnPos = pos;
         player.id = id;
 
         List.Add(id, player);
@@ -96,7 +97,6 @@ public class EntityMP : Entity
         long lastTS = keys[x];
         Vector2 pos = newPos;
         Vector2 v = rb.velocity;
-        //Debug.Log("DADADADADADAD " + v);
         Vector2 g = Physics2D.gravity * rb.gravityScale;
         for(int i = x+1; i<movementHistory.Count; ++i)
         {
@@ -158,9 +158,7 @@ public class EntityMP : Entity
                 lastPos = last;
                 memoryReset = true;
                 memoryResetTimer = memoryResetTicks;
-                //rb.MovePosition(lastPos);
                 rb.velocity = v;
-                //transform.position = lastPos;
                 correction = true;
             }
             ResearchManager.Instance.HandlePositionChange(gameObject, oldPos, lagDistance, lastPos);
@@ -171,7 +169,6 @@ public class EntityMP : Entity
             lerpDest = newPosition;
             shouldLerp = true;
         }
-        //Debug.Log(lagDistance);
         
     }
     private void SendSpawn()

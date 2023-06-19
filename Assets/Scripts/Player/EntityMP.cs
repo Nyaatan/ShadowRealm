@@ -164,10 +164,11 @@ public class EntityMP : Entity
             ResearchManager.Instance.HandlePositionChange(gameObject, oldPos, lagDistance, lastPos);
             transform.position = lastPos;
             oldPos = transform.position;
-        } else if (lagDistance.magnitude > 0.1f)
+        } else //if (lagDistance.magnitude > 0.1f)
         {
-            lerpDest = newPosition;
-            shouldLerp = true;
+            //lerpDest = newPosition;
+            //shouldLerp = true;
+            transform.position = newPosition;
         }
         
     }
